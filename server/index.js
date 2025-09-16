@@ -4,11 +4,11 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config()
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI;
 const key = process.env.JWT_SECRET;
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: ["https://tenant-app-cyan.vercel.app","http://localhost:5173"],
     credentials: true
 }))
 app.use(express.urlencoded({ extended: true }))
@@ -23,19 +23,18 @@ async function mongooseConnect() {
 }
 mongooseConnect();
 //auth
-import NotesAuth from "../server/NotesAuth/NotesAuth.js";
+import NotesAuth from "./NotesAuth/NotesAuth.js";
 app.use("/api/notes/auth", NotesAuth);
 //notes admin + user
-import NotesRoutes from "../server/NotesRoutes/NotesRoutes.js";
+import NotesRoutes from "./NotesRoutes/NotesRoutes.js";
 app.use("/api/notes", NotesRoutes);
 //admin   /api/admin
-import AdminRoutes from "../server/NotesRoutes/AdminRoutes.js"
+import AdminRoutes from "./NotesRoutes/AdminRoutes.js"
 app.use("/api/admin", AdminRoutes)
 //health
 app.get("/api/health", (req, res) => {
     res.json({ status: "ok" });
 })
-app.use("/api/admin", AdminRoutes)
 app.listen(PORT, () => {
     console.log(`listening port ${PORT}`)
 })
