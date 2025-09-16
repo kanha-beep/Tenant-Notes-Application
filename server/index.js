@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI;
 const key = process.env.JWT_SECRET;
 app.use(cors({
-    origin: ["https://tenant-app-cyan.vercel.app","http://localhost:5173"],
+    origin: ["https://tenant-app-thle.vercel.app","http://localhost:5173"],
     credentials: true
 }))
 app.use(express.urlencoded({ extended: true }))
