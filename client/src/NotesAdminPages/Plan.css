@@ -1,0 +1,9 @@
+/* .alert-danger {
+  opacity: 0; 
+  max-height: 0;
+  transition: max-height 5s ease-in-out, opacity 5s ease-in-out;
+}
+.alert-danger.show {
+  max-height: 10rem;
+  opacity: 1;
+} */
