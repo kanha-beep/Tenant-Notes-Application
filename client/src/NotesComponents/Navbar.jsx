@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function Navbar({ isLoggedIn }) {
+export default function Navbar({ isLoggedIn}) {
   return (
     <div>
       <div className="p-1 rounded " style={{ backgroundColor: "yellow" }}>
@@ -33,7 +33,7 @@ export default function Navbar({ isLoggedIn }) {
               <>
                 <li className="ms-3">
                   <Link
-                    to="/signup"
+                    to={`/auth`}
                     className="text-decoration-none"
                     style={{ color: "orange" }}
                   >
@@ -42,7 +42,7 @@ export default function Navbar({ isLoggedIn }) {
                 </li>
                 <li className="ms-3">
                   <Link
-                    to="/login"
+                    to={`/auth`}
                     className="text-decoration-none"
                     style={{ color: "orange" }}
                   >

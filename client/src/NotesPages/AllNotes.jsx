@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../init/api"
+import api from "../init/api";
 
 export default function AllTasks() {
   const tenant = localStorage.getItem("tenant") || "got";
@@ -41,14 +41,11 @@ export default function AllTasks() {
   }, [token, filterTenantNotes]);
   const handleDelete = async (notesId) => {
     try {
-      const res = await api.delete(
-        `/api/notes/${notesId}/delete`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await api.delete(`/api/notes/${notesId}/delete`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log("note deleted AllNotes F", res.data);
       setNotes((p) => p.filter((n) => n._id !== notesId));
     } catch (e) {
@@ -78,73 +75,92 @@ export default function AllTasks() {
   }, [token]);
   return (
     <div>
-      <div>
-        Add Note{" "}
-        <button onClick={() => navigate("/notes/new")}>Add Note </button>
+      <h1 className="p-2 d-flex justify-content-center"> All Tasks</h1>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-start",
+        }}
+      >
+        <button
+          className="p-2 rounded-5 m-2"
+          onClick={() => navigate("/notes/new")}
+        >
+          Add Note{" "}
+        </button>
       </div>
-      <h1> All Tasks</h1>
       {owner && (
-        <div key={owner._id}>
+        <div
+          key={owner._id}
+          style={{ backgroundColor: "aqua", width: "17rem" }}
+          className="p-3 ms-1 me-1 rounded-5"
+        >
           <p>
-            {" "}
             Current OwnerId: <b>{owner?._id}</b> <br />
-            Current Owner Name: <b>{owner?.username}</b>
+            Current Owner Name: <b>{owner?.username}</b> <br />
+            Current Tenant Name: <b>{owner?.tenant?.name}</b>
           </p>
-          {owner?.tenant?.name && (
-            <p>
-              Current Tenant Name: <b>{owner?.tenant.name}</b>
-            </p>
-          )}
         </div>
       )}
-      {filterTenantNotes &&
-        filterTenantNotes.map((n) => (
-          <div key={n._id}>
-            <br />
-            <div
-              className="m-1 p-1"
-              style={{
-                backgroundColor: "aqua",
-                height: "20rem",
-                width: "20rem",
-              }}
-            >
-              <div>
-                <p>
-                  Owner Name: <b>{n.user?.username}</b>
-                </p>
-              </div>
-              <div>
-                <p>
-                  Owner Id: <b>{n.user?._id}</b>{" "}
-                </p>
-              </div>
-              <div>
-                <p>Title: {n.title}</p>
-              </div>
-              <div>
-                <p>Content: {n.content}</p>
-              </div>
-              <div>
-                <p>
-                  Id: <b>{n._id}</b>
-                </p>
-                <p>
-                  Current Tenant Name: <b>{n.tenant?.name}</b>
-                </p>
-              </div>
-
-              <button
-                onClick={() => navigate(`/notes/${n._id}`)}
-                className="m-1"
-              >
-                View{" "}
-              </button>
+      <div style={{ display: "flex", flexWrap: "wrap" }}>
+        {filterTenantNotes &&
+          filterTenantNotes.map((n) => (
+            <div key={n._id} className="mt-2">
               <br />
-              <button onClick={() => handleDelete(n._id)}>Delete</button>
+              <div
+                className="m-1 p-2 rounded-3"
+                style={{
+                  backgroundColor: "aqua",
+                  height: "95%",
+                  width: "20rem",
+                  border: "5px solid white",
+                  boxShadow: "0px 0px 10px black",
+                }}
+              >
+                <div>
+                  <p>
+                    Owner Name: <b>{n.user?.username}</b>
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    Owner Id: <b>{n.user?._id}</b>{" "}
+                  </p>
+                </div>
+                <div>
+                  <p>Title: {n.title}</p>
+                </div>
+                <div>
+                  <p>Content: {n.content}</p>
+                </div>
+                <div>
+                  <p>
+                    Id: <b>{n._id}</b>
+                  </p>
+                  <p>
+                    Current Tenant Name: <b>{n.tenant?.name}</b>
+                  </p>
+                </div>
+                <div style={{display:"flex"}}>
+                  <button
+                    onClick={() => navigate(`/notes/${n._id}`)}
+                    className="m-1 p-2 rounded-4"
+                    style={{}}
+                  >
+                    View{" "}
+                  </button>
+                  <br />
+                  <button
+                    onClick={() => handleDelete(n._id)}
+                    className="m-1 p-2 rounded-4"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+      </div>
     </div>
   );
 }

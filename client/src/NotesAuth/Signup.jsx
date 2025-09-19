@@ -103,7 +103,7 @@ export default function Signup() {
             <option value="admin">Admin</option>
           </select>
           <br />
-          <button onClick={() => navigate("/")}>Sign up </button>
+          <button>Sign up </button>
         </form>
       </div>
     </div>

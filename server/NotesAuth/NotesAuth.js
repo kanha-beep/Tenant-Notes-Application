@@ -11,7 +11,7 @@ route.post("/signup", async (req, res) => {
     const { username, email, password, tenant, role } = req.body;
     if (!username || !email || !password || !tenant) return res.status(401).json("Please enter details");
     const findTenant = await Tenant.findOne({ name: tenant })
-    if (!findTenant) return res.status(403).json("No Tenant signup B")
+    if (!findTenant) return res.status(403).json("No existing Tenant found")
     console.log("Found tenant SIGNUP B:", findTenant);
     const existingUser = await User.findOne({ email, tenant: findTenant._id })
     if (existingUser) return res.status(402).json("Already Registered");

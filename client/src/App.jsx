@@ -7,8 +7,7 @@ import NewNotes from "./NotesPages/NewNotes.jsx";
 import Notes from "./NotesPages/Notes.jsx";
 import EditNotes from "./NotesPages/EditNotes.jsx";
 import Navbar from "./NotesComponents/Navbar.jsx";
-import Login from "./NotesAuth/Login.jsx";
-import Signup from "./NotesAuth/Signup.jsx";
+import Auth from "./NotesAuth/Auth.jsx";
 import Logout from "./NotesAuth/Logout.jsx";
 import ProtectedRoute from "./NotesPages/ProtectedRoute.jsx";
 import AllUsers from "./NotesAdminPages/AllUsers.jsx";
@@ -20,8 +19,12 @@ import Plan from "./NotesAdminPages/Plan.jsx";
 import Health from "./NotesAdminPages/Health.jsx";
 import { useState } from "react";
 import { useEffect } from "react";
+import api from "./init/api.js";
 
 function App() {
+  const [isPage, setIsPage] = useState(true);
+  // const url = isPage ? "login":"signup"
+  // const [url, setUrl] = useState("login")
   const [userRole] = useState(""); // "admin" or "user"
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
@@ -36,9 +39,11 @@ function App() {
           headers: { Authorization: `Bearer ${token}` },
         });
         setIsLoggedIn(true);
+        setIsPage(true)
       } catch {
         localStorage.removeItem("tokens");
         setIsLoggedIn(false);
+        setIsPage(false)
       }
     };
     validateToken();
@@ -72,14 +77,10 @@ function App() {
           />
           <Route path="/admin/plan" element={<Plan />} />
         </Route>
-        <Route
-          path="/login"
-          element={<Login setIsLoggedIn={setIsLoggedIn} />}
-        />
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/auth" element={<Auth setIsLoggedIn={setIsLoggedIn} />} />
         <Route
           path="/logout"
-          element={<Logout setIsLoggedIn={setIsLoggedIn} />}
+          element={<Logout setIsLoggedIn={setIsLoggedIn}/>}
         />
       </Routes>
     </>

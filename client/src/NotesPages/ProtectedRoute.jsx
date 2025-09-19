@@ -6,7 +6,7 @@ export default function ProtectedRoute() {
     // const navigate = useNavigate();
     const token = localStorage.getItem("tokens")
     if(!token) {
-        return <Navigate to="/login" replace/>
+        return <Navigate to="/auth" replace/>
     }
   return <Outlet/>;
 }
