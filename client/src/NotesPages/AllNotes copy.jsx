@@ -75,22 +75,26 @@ export default function AllTasks() {
     getAllNotes();
   }, [token]);
   return (
-    <div className="container">
-      <h1 className="p-2 text-center">All Tasks</h1>
-
-      <div className="d-flex justify-content-start mb-3">
+    <div>
+      <h1 className="p-2 d-flex justify-content-center"> All Tasks</h1>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-start",
+        }}
+      >
         <button
-          className="btn btn-primary rounded-5"
+          className="p-2 rounded-5 m-2"
           onClick={() => navigate("/notes/new")}
         >
-          Add Note
+          Add Note{" "}
         </button>
       </div>
-
       {owner && (
         <div
           key={owner._id}
-          className="p-3 mb-3 rounded-5 bg-info col-12 col-sm-6 col-md-4"
+          style={{ backgroundColor: "aqua", width: "17rem" }}
+          className="p-3 ms-1 me-1 rounded-5"
         >
           <p>
             Current OwnerId: <b>{owner?._id}</b> <br />
@@ -98,43 +102,64 @@ export default function AllTasks() {
             Current Tenant Name: <b>{owner?.tenant?.name}</b>
           </p>
           <button
-            className="btn btn-secondary rounded-4"
+            className="p-2 rounded-4"
             onClick={() => navigate(`/users/${owner?._id}`)}
           >
             Go to Profile
           </button>
         </div>
       )}
-
-      <div className="row">
+      <div style={{ display: "flex", flexWrap: "wrap" }}>
         {filterTenantNotes &&
           filterTenantNotes.map((n) => (
-            <div key={n._id} className="col-12 col-sm-6 col-md-4 mb-3">
-              <div className="p-3 rounded-3 bg-info shadow-sm h-100">
-                <p>
-                  Owner Name: <b>{n.user?.username}</b>
-                </p>
-                <p>
-                  Owner Id: <b>{n.user?._id}</b>
-                </p>
-                <p>Title: {n.title}</p>
-                <p>Content: {n.content}</p>
-                <p>
-                  Id: <b>{n._id}</b>
-                </p>
-                <p>
-                  Current Tenant Name: <b>{n.tenant?.name}</b>
-                </p>
-                <div className="d-flex flex-wrap">
+            <div key={n._id} className="mt-2">
+              <br />
+              <div
+                className="m-1 p-2 rounded-3"
+                style={{
+                  backgroundColor: "aqua",
+                  height: "95%",
+                  width: "20rem",
+                  border: "5px solid white",
+                  boxShadow: "0px 0px 10px black",
+                }}
+              >
+                <div>
+                  <p>
+                    Owner Name: <b>{n.user?.username}</b>
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    Owner Id: <b>{n.user?._id}</b>{" "}
+                  </p>
+                </div>
+                <div>
+                  <p>Title: {n.title}</p>
+                </div>
+                <div>
+                  <p>Content: {n.content}</p>
+                </div>
+                <div>
+                  <p>
+                    Id: <b>{n._id}</b>
+                  </p>
+                  <p>
+                    Current Tenant Name: <b>{n.tenant?.name}</b>
+                  </p>
+                </div>
+                <div style={{ display: "flex" }}>
                   <button
                     onClick={() => navigate(`/notes/${n._id}`)}
-                    className="btn btn-outline-primary m-1 rounded-4"
+                    className="m-1 p-2 rounded-4"
+                    style={{}}
                   >
-                    View
+                    View{" "}
                   </button>
+                  <br />
                   <button
                     onClick={() => handleDelete(n._id)}
-                    className="btn btn-outline-danger m-1 rounded-4"
+                    className="m-1 p-2 rounded-4"
                   >
                     Delete
                   </button>

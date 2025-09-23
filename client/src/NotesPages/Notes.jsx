@@ -28,25 +28,27 @@ export default function Notes() {
     getOneNotes();
   }, []);
   return (
-    <div>
-      <h2 style={{ display: "flex", justifyContent: "center" }}>
-        Your Dashboard
-      </h2>
-      {msg !== "" && (
-        <h4 className="alert alert-danger" role="alert">
-          {msg}
-        </h4>
-      )}
-      <div
-        style={{ backgroundColor: "aqua", width: "30%" }}
-        className="p-2 rounded-3 mb-2"
-      >
-        <p>
-          Owner Name: <b>{notes?.title}</b>
-        </p>
-        <p>
-          Owner Id: <b>{notes?._id}</b>
-        </p>
+    <div className="container-fluid">
+      <h2 className="text-center">Your Dashboard</h2>
+      <div className="row">
+        {msg !== "" && (
+          <h4 className="alert alert-danger col-12 col-md-8 col-lg-6" role="alert">
+            {msg}
+          </h4>
+        )}
+      </div>
+      <div className="row justify-content-center">
+        <div
+          style={{ backgroundColor: "aqua", width: "30%" }}
+          className="p-2 rounded-3 mb-2 col-12 col-md-8 col-lg-6"
+        >
+          <p>
+            Owner Name: <b>{notes?.title}</b>
+          </p>
+          <p>
+            Owner Id: <b>{notes?._id}</b>
+          </p>
+        </div>
       </div>
       <div
         style={{
@@ -55,16 +57,16 @@ export default function Notes() {
           display: "flex",
           justifyContent: "center",
         }}
-        className="p-2"
+        className="p-2 row"
       >
         {notes && (
           <div
             key={notes._id}
-            className="m-1 p-1"
+            className="m-1 p-1 col-12 col-lg-6 col-md-8"
             style={{
               backgroundColor: "aqua",
               height: "20rem",
-              width: "25rem",
+              // width: "25rem",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
@@ -97,7 +99,7 @@ export default function Notes() {
             </div>
             <button
               onClick={() => navigate(`/notes/${notes?._id}/edit`)}
-              className="m-1 btn btn-primary rounded-4"
+              className="m-1 btn btn-outline-primary rounded-4"
               style={{ width: "20%" }}
             >
               Edit

@@ -43,35 +43,49 @@ export default function EditNotes() {
   };
 
   return (
-    <div>
-      <h1>Edit Note</h1>
-      {msg && (
-        <div className="alert alert-danger" role="alert">
-          {msg}
+    <div className="container">
+      <h1 className="text-center">Edit Note</h1>
+      <div className="row">
+        {msg && (
+          <div
+            className="alert alert-danger col-12 col-lg-6 col-md-8"
+            role="alert"
+          >
+            {msg}
+          </div>
+        )}
+      </div>
+      <div className="row">
+        <form onSubmit={handleEditNote} className="col-12 col-lg-8 mx-auto">
+          <input
+            type="text"
+            name="title"
+            placeholder="Name of Note"
+            value={data.title}
+            onChange={handleChange}
+            className="form-control mb-2"
+          />
+          <input
+            type="text"
+            name="content"
+            placeholder="Content of Note"
+            value={data.content}
+            onChange={handleChange}
+            className="form-control"
+          />
+          <button className="btn btn-outline-primary m-2">Update</button>
+        </form>
+      </div>
+      <div className="row">
+        <div className="col-12 col-lg-8 mx-auto">
+          <button
+            className="btn btn-outline-secondary m-2 w-20"
+            onClick={() => navigate("/notes")}
+          >
+            Back to Notes
+          </button>
         </div>
-      )}
-      <form onSubmit={handleEditNote}>
-        <input
-          type="text"
-          name="title"
-          placeholder="Name of Note"
-          value={data.title}
-          onChange={handleChange}
-          className="m-2 p-1"
-        />
-        <input
-          type="text"
-          name="content"
-          placeholder="Content of Note"
-          value={data.content}
-          onChange={handleChange}
-          className="m-2 p-1"
-        />
-        <button className="btn btn-primary m-2">Update</button>
-      </form>
-      <button className="btn btn-secondary m-2" onClick={() => navigate("/notes")}>
-        Back to Notes
-      </button>
+      </div>
     </div>
   );
 }

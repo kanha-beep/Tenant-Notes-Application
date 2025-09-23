@@ -102,6 +102,7 @@ export default function Auth({ setIsLoggedIn }) {
     } //else ended
   };
   return (
+    //parent
     <div
       style={{
         // backgroundColor: "aqua",
@@ -110,125 +111,137 @@ export default function Auth({ setIsLoggedIn }) {
         justifyContent: "center",
         alignItems: "center",
       }}
-      className="p-2 m-2"
+      className="p-2 m-2 container row justify-content-center"
     >
-      <div
-        style={{
-          minHeight: "30rem", // 👈 keeps space even if fields are hidden
-          width: "25rem",
-          background: "white",
-          borderRadius: "1rem",
-          padding: "2rem",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-        }}
-      >
+      {/* //inside parent div */}
+      <div className="row">
         <div
+          className="col-12 col-lg-6 col-sm-8"
           style={{
-            display: "flex",
-            justifyContent: "space-between",
+            minHeight: "30rem", // 👈 keeps space even if fields are hidden
+            // width: "25rem",
+            background: "white",
+            borderRadius: "1rem",
+            padding: "2rem",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
           }}
-          className="m-2"
         >
-          <button
-            style={{
-              fontSize: "2rem",
-              border: "5px solid blue",
-              borderRadius: "5rem",
-            }}
-            className={`btn ${isPage ? "btn-outline-primary" : "btn-primary"}`}
-            onClick={() => {
-              setIsPage(false);
-            }}
+          {/* //button divs */}
+          <div
+            className="m-2 row justify-content-center"
           >
-            Sign Up
-          </button>
-          <button
-            style={{
-              // display: "flex",
-              // justifyContent: "center",
-              fontSize: "2rem",
-              border: "5px solid blue",
-              borderRadius: "5rem",
-            }}
-            className={`btn ${
-              isPage ? "btn-primary" : "btn-outline-primary"
-            } ms-2`}
-            onClick={() => {
-              setIsPage(true);
-            }}
-          >
-            Login{" "}
-          </button>
-        </div>
-        {msg !== "" && (
-          <div className="alert alert-danger" role="alert">
-            {msg}
-          </div>
-        )}
-        <div>
-          {isPage ? "true" : "false"}
-          <form onSubmit={handleSubmitAuth}>
-            <input
-              type="text"
-              onChange={handleChange}
-              placeholder="Email"
-              name="email"
-              value={userForm.email}
-              className="p-2 rounded-5 m-2"
-            />
-            <br />
-            <input
-              type="text"
-              onChange={handleChange}
-              placeholder="Password"
-              name="password"
-              value={userForm.password}
-              className="p-2 rounded-5 m-2"
-            />{" "}
-            <br />
-            <select
-              name="tenant"
-              value={userForm.tenant}
-              onChange={handleChange}
-              className="p-2 m-2 rounded-5"
+            <button
+              style={{
+                fontSize: "2rem",
+                border: "5px solid blue",
+                borderRadius: "5rem",
+              }}
+              className={`btn ${
+                isPage ? "btn-outline-primary" : "btn-primary"
+              }`}
+              onClick={() => {
+                setIsPage(false);
+              }}
             >
-              <option value="" disabled>
-                Select tenant
-              </option>
-              <option value="Acme">Acme</option>
-              <option value="Globex">Globex</option>
-            </select>
-            <br />
-            {!isPage && (
-              <>
-                <input
-                  type="text"
-                  onChange={handleChange}
-                  placeholder="Username"
-                  name="username"
-                  value={userForm.username}
-                  className="p-2 rounded-5 m-2"
-                />
-                <br />
-                <select
-                  name="role"
-                  value={userForm.role}
-                  onChange={handleChange}
-                  className="p-2 m-2 rounded-5"
-                >
-                  <option value="" disabled>
-                    Select Role
-                  </option>
-                  <option value="user">User</option>
-                  <option value="admin">Admin</option>
-                </select>
-                <br />
-              </>
-            )}
-            <button className="p-2 m-2 rounded-5 btn btn-primary">
-              {isPage ? "Login" : "Sign Up"}
+              Sign Up
             </button>
-          </form>
+            <button
+              style={{
+                // display: "flex",
+                // justifyContent: "center",
+                fontSize: "2rem",
+                border: "5px solid blue",
+                borderRadius: "5rem",
+              }}
+              className={`btn ${
+                isPage ? "btn-primary" : "btn-outline-primary"
+              } ms-2`}
+              onClick={() => {
+                setIsPage(true);
+              }}
+            >
+              Login{" "}
+            </button>
+          </div>
+          {/* msg */}
+          <div className="row">
+            {msg !== "" && (
+              <div
+                className="alert alert-danger col-12 col-lg-6 col-sm-8"
+                role="alert"
+              >
+                {msg}
+              </div>
+            )}
+          </div>
+          <div className="row">
+            {isPage ? "true" : "false"}
+            <form
+              onSubmit={handleSubmitAuth}
+              className="col-12 col-lg-6 col-md-12"
+            >
+              <input
+                type="text"
+                onChange={handleChange}
+                placeholder="Email"
+                name="email"
+                value={userForm.email}
+                className="p-2 rounded-5 m-2 form-control"
+              />
+              <br />
+              <input
+                type="text"
+                onChange={handleChange}
+                placeholder="Password"
+                name="password"
+                value={userForm.password}
+                className="p-2 rounded-5 m-2 form-control"
+              />{" "}
+              <br />
+              <select
+                name="tenant"
+                value={userForm.tenant}
+                onChange={handleChange}
+                className="p-2 m-2 rounded-5"
+              >
+                <option value="" disabled>
+                  Select tenant
+                </option>
+                <option value="Acme">Acme</option>
+                <option value="Globex">Globex</option>
+              </select>
+              <br />
+              {!isPage && (
+                <>
+                  <input
+                    type="text"
+                    onChange={handleChange}
+                    placeholder="Username"
+                    name="username"
+                    value={userForm.username}
+                    className="p-2 rounded-5 m-2"
+                  />
+                  <br />
+                  <select
+                    name="role"
+                    value={userForm.role}
+                    onChange={handleChange}
+                    className="p-2 m-2 rounded-5"
+                  >
+                    <option value="" disabled>
+                      Select Role
+                    </option>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                  <br />
+                </>
+              )}
+              <button className="p-2 m-2 rounded-5 btn btn-primary">
+                {isPage ? "Login" : "Sign Up"}
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>

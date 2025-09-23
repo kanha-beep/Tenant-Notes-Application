@@ -31,7 +31,7 @@ export default function Users() {
     currentOwner();
   }, [token]);
   return (
-    <div>
+    <div className="container">
       <h1>Profile</h1>
       {/* {msg && (
         <div className="alert alert-danger" role="alert">
@@ -39,19 +39,20 @@ export default function Users() {
         </div>
       )} */}
       <div
+      className="row justify-content-center p-2"
         style={{
           backgroundColor: "aqua",
           height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          // display: "flex",
+          // justifyContent: "center",
+          // alignItems: "center",
         }}
       >
         {owner && (
           <div
             key={owner._id}
-            style={{ backgroundColor: "yellow", width: "17rem" }}
-            className="p-3 ms-1 me-1 rounded-5"
+            style={{ backgroundColor: "yellow" }}
+            className="p-3 ms-1 me-1 rounded-5 col-12 col-lg-6 col-sm-8"
           >
             <p>
               Current OwnerId: <b>{owner?._id}</b> <br />
@@ -67,7 +68,7 @@ export default function Users() {
           </div>
         )}
       </div>
-      <button className="p-2 btn btn-primary" onClick={()=>navigate("/notes")}>Go Home</button>
+      <button className="p-2 btn btn-outline-primary my-2" onClick={()=>navigate("/notes")}>Go Home</button>
     </div>
   );
 }

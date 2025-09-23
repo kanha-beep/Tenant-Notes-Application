@@ -47,38 +47,48 @@ export default function EditUsersProfile() {
     }
   };
   return (
-    <div>
+    <div className="container">
       <h1>Edit Profile</h1>
-      {msg && (
-        <div className="alert alert-danger" role="alert">
-          {msg}
-        </div>
-      )}
-      <form onSubmit={handleEditUser}>
-        <input
-          type="text"
-          name="username"
-          placeholder="username of User"
-          value={data.username}
-          onChange={handleChange}
-          className="m-2 p-1"
-        />
-        <input
-          type="text"
-          name="password"
-          placeholder="password"
-          value={data.password}
-          onChange={handleChange}
-          className="m-2 p-1"
-        />
-        <button className="btn btn-primary m-2">Edit</button>
-      </form>
-      <button
-        className="btn btn-secondary m-2"
-        onClick={() => navigate(`/users/${usersId}`)}
-      >
-        Back to Profile
-      </button>
+      <div className="row">
+        {msg && (
+          <div
+            className="alert alert-danger col-12 col-lg-6 col-md-8"
+            role="alert"
+          >
+            {msg}
+          </div>
+        )}
+      </div>
+      <div className="row">
+        <form onSubmit={handleEditUser} className="col-12 col-lg-6 col-sm-8">
+          <input
+            type="text"
+            name="username"
+            placeholder="username of User"
+            value={data.username}
+            onChange={handleChange}
+            className="m-2 p-1 form-control"
+          />
+          <input
+            type="text"
+            name="password"
+            placeholder="password"
+            value={data.password}
+            onChange={handleChange}
+            className="m-2 p-1 form-control"
+          />
+          <button className="btn btn-outline-primary m-2">Edit</button>
+        </form>
+      </div>
+
+      {/* <div className="row"> */}
+        <button
+          className="btn btn-outline-secondary m-2"
+          onClick={() => navigate(`/users/${usersId}`)}
+        >
+          Back to Profile
+        </button>
+      {/* </div> */}
     </div>
   );
 }
