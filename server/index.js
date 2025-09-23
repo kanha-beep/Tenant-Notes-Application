@@ -29,6 +29,9 @@ app.use("/api/notes/auth", NotesAuth);
 //notes admin + user
 import NotesRoutes from "./NotesRoutes/NotesRoutes.js";
 app.use("/api/notes", NotesRoutes);
+//user Profile
+import UserRoutes from "./NotesRoutes/UsersRoute.js";
+app.use("/api/users", UserRoutes);
 //admin   /api/admin
 import AdminRoutes from "./NotesRoutes/AdminRoutes.js"
 app.use("/api/admin", AdminRoutes)

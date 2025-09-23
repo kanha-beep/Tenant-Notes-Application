@@ -34,7 +34,7 @@ const isNoteOwner = async (req, res, next) => {
         if (tenant._id.toString() !== notes.tenant._id.toString()) return res.status(403).json({ message: "Unauthorized: different tenant" });
         // if (tenant._id.toString() === notes.tenant._id.toString()) return res.status(403).json({ message: "Tenant and owner verified MW" });
         // if (tenant.toString() !== notes.tenant.toString()) return res.status(403).json({ message: "Unauthorized: different tenant" });
-        // if (req.user.username.toString() !== notes.user._id.toString()) return res.status(403).json({ message: "Unauthorized: not the owner" });
+        if (req.user.userId.toString() !== notes.user._id.toString()) return res.status(403).json({ message: "Unauthorized: not the owner" });
         console.log("user isTenant: ", req.user.userId, req.user.tenant.name);
         next();
     } catch (e) {

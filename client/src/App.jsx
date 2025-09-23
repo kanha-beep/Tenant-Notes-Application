@@ -20,41 +20,58 @@ import Health from "./NotesAdminPages/Health.jsx";
 import { useState } from "react";
 import { useEffect } from "react";
 import api from "./init/api.js";
+import Users from "./NotesUsersPages/Users.jsx";
+import EditUsersProfile from "./NotesUsersPages/EditUsersProfile.jsx";
 
 function App() {
+  // const {userId} = useParams();
   const [isPage, setIsPage] = useState(true);
   // const url = isPage ? "login":"signup"
   // const [url, setUrl] = useState("login")
-  const [userRole] = useState(""); // "admin" or "user"
+  const [userRole, setUserRole] = useState(""); // "admin" or "user"
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const token = localStorage.getItem("tokens");
   useEffect(() => {
     const validateToken = async () => {
-      const token = localStorage.getItem("tokens");
       if (!token) {
         setIsLoggedIn(false);
+        setIsPage(false);
+        setUserRole("");
         return;
       }
       try {
-        await api.get("/api/notes/auth/me", {
+        await api.get(`/api/users`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setIsLoggedIn(true);
-        setIsPage(true)
+        setIsPage(true);
+        console.log("Online if no token APp.jsx");
+        console.log("token saved", token);
+        const role = localStorage.getItem("role"); //admin
+        setUserRole(role);
+        console.log("1. userRole:", role); //admin
+        console.log("3. userRole:", userRole); //empty
       } catch {
         localStorage.removeItem("tokens");
         setIsLoggedIn(false);
-        setIsPage(false)
+        setIsPage(false);
+        setUserRole("");
+        console.log("2. userRole:", userRole);
+        console.log("offline if no token APp.jsx");
       }
     };
     validateToken();
-  }, []);
+  }, [token]);
   return (
     <>
+      {isPage ? "Online" : "Offline"}&nbsp;{userRole}
       <Navbar isLoggedIn={isLoggedIn} />
       <Routes>
         {/* <Route path="/" element={<AllUsers />} /> */}
         <Route path="/health" element={<Health />} />
         <Route element={<ProtectedRoute />}>
+          <Route path="/users/:usersId" element={<Users />} />
+          <Route path="/users/:usersId/edit" element={<EditUsersProfile />} />
           <Route path="/" element={<AllNotes />} />
           <Route path="/notes" element={<AllNotes />} />
           <Route path="/notes/new" element={<NewNotes />} />
@@ -68,7 +85,9 @@ function App() {
           <Route
             path="/admin/dashboard"
             element={
-              userRole === "admin" ? (
+              userRole === "" ? (
+                <div>Loading...</div>
+              ) : userRole === "admin" ? (
                 <Dashboard isLoggedIn={isLoggedIn} />
               ) : (
                 <Navigate to="/notes" />
@@ -80,7 +99,9 @@ function App() {
         <Route path="/auth" element={<Auth setIsLoggedIn={setIsLoggedIn} />} />
         <Route
           path="/logout"
-          element={<Logout setIsLoggedIn={setIsLoggedIn}/>}
+          element={
+            <Logout setIsLoggedIn={setIsLoggedIn} setIsPage={setIsPage} />
+          }
         />
       </Routes>
     </>

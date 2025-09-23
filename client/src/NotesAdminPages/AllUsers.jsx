@@ -52,7 +52,7 @@ export default function AllUsers() {
   useEffect(() => {
     getAllUsers();
     currentAdmin();
-  }, [token]);
+  }, [token, localStorage.getItem("role")]);
   return (
     <div>
       <div className="m-1 p-1 " style={{ backgroundColor: "aqua" }}>

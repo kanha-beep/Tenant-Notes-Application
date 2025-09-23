@@ -6,6 +6,7 @@ import api from "../init/api";
 
 export default function Auth({ setIsLoggedIn }) {
   // const [url, setUrl] = useState("");
+  // const [role, setRole] = useState("");
   const [isPage, setIsPage] = useState(true);
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
@@ -52,6 +53,7 @@ export default function Auth({ setIsLoggedIn }) {
         console.log("login url", url);
         const res = await api.post(`/api/notes/auth/${url}`, userForm);
         console.log("Login B done now F", url);
+        // const role = res.data.role;
         const token = res.data;
         const parseJwt = (token) => {
           try {
@@ -65,16 +67,21 @@ export default function Auth({ setIsLoggedIn }) {
         const decoded = parseJwt(token);
         console.log(decoded);
         const role = decoded.role;
-        console.log("decoding done");
+        console.log("decoding done", role); //admin
         localStorage.setItem("tokens", token);
+        const tokenRole = decoded.role;
+        console.log("new role: ", tokenRole); //admin
         setIsLoggedIn(true);
         localStorage.setItem("tenant", userForm.tenant);
         localStorage.getItem("tenant");
         console.log("role check starts");
+        localStorage.setItem("role", role);
         if (role === "admin") {
-          console.log("role check");
+          console.log("role check: ", role); //admin
+
           navigate("/admin/dashboard"); // go to admin dashboard
         } else {
+          console.log("role check: ", role);
           navigate("/notes"); // go to normal notes page
         }
       } catch (e) {

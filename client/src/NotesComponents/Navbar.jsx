@@ -3,22 +3,22 @@ import { Link } from "react-router-dom";
 
 export default function Navbar({ isLoggedIn}) {
   return (
-    <div>
-      <div className="p-1 rounded " style={{ backgroundColor: "yellow" }}>
-        <div className="d-flex">
+    <div className="container">
+      <div className="p-1 rounded d-flex navbar navbar-expand-lg navbar-light bg-light col-12 col-md-6" style={{ backgroundColor: "black" }}>
+        {/* <div className=""> */}
           <ul
-            className="list-unstyled d-flex justify-content-start"
+            className="list-unstyled d-flex justify-content-start navbar-nav ms-auto"
             style={{ backgroundColor: "white", width: "50%" }}
           >
             {isLoggedIn && (
               <>
-                <li className="ms-1">
+                <li className="ms- nav-item">
                   <Link
                     to="/admin/dashboard"
-                    className="text-decoration-none"
+                    className="text-decoration-none nav-link"
                     style={{ color: "orange" }}
                   >
-                    Dashboard/Home
+                    Dashboard
                   </Link>
                 </li>
               </>
@@ -63,7 +63,7 @@ export default function Navbar({ isLoggedIn}) {
               </li>
             )}
           </ul>
-        </div>
+        {/* </div> */}
       </div>
     </div>
   );

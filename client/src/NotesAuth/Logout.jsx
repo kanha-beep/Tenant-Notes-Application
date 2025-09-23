@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Logout({ setIsLoggedIn, url }) {
+export default function Logout({ setIsLoggedIn, setIsPage }) {
   const navigate = useNavigate();
   useEffect(() => {
     localStorage.removeItem("tokens");
     localStorage.removeItem("tenant");
     setIsLoggedIn(false);
-    console.log("logout url", url)
-    return navigate(`/${url}`);
+    setIsPage(false);
+    console.log("Offline if no token Logout.jsx");
+    console.log("logout url");
+    navigate(`/auth`);
   }, [navigate]);
   return null;
 }

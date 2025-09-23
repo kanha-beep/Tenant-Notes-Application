@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../init/api";
 
 export default function AllTasks() {
+  // const {userId} = useParams();
   const tenant = localStorage.getItem("tenant") || "got";
   const [filterTenant] = useState(tenant || "are");
   const [filterTenantNotes, setFilterTenantNotes] = useState([]);
@@ -25,7 +26,7 @@ export default function AllTasks() {
         console.log("No token for Owner AllNotes");
         return;
       }
-      const res = await api.get(`/api/notes/auth/me`, {
+      const res = await api.get(`/api/users`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -33,7 +34,7 @@ export default function AllTasks() {
       // console.log("current owner AllNotes: ", res.data);
       setOwner(res.data);
     } catch (e) {
-      console.log("current AllNotes: ", e.response.data);
+      console.log("current AllNotes: ", e.response.data.message);
     }
   };
   useEffect(() => {
@@ -100,6 +101,12 @@ export default function AllTasks() {
             Current Owner Name: <b>{owner?.username}</b> <br />
             Current Tenant Name: <b>{owner?.tenant?.name}</b>
           </p>
+          <button
+            className="p-2 rounded-4"
+            onClick={() => navigate(`/users/${owner?._id}`)}
+          >
+            Go to Profile
+          </button>
         </div>
       )}
       <div style={{ display: "flex", flexWrap: "wrap" }}>
@@ -141,7 +148,7 @@ export default function AllTasks() {
                     Current Tenant Name: <b>{n.tenant?.name}</b>
                   </p>
                 </div>
-                <div style={{display:"flex"}}>
+                <div style={{ display: "flex" }}>
                   <button
                     onClick={() => navigate(`/notes/${n._id}`)}
                     className="m-1 p-2 rounded-4"

@@ -24,17 +24,17 @@ route.post("/new", verifyToken, isRole("user", "admin"), isPaid, async (req, res
 })
 route.get("/", verifyToken, isRole("user", "admin"), async (req, res) => {
     try {
-        // console.log("req.user in route:", req.user);
+        console.log("req.user in route:", req.user);
         const notes = await Notes.find({}).populate("user", "userId").populate("tenant", "name");
         if (!notes) return res.status(401).json("No Notes to show B");
         console.log("user role NotesRoutes: ,", "role", req.user.role)
-        // console.log("all notes: ", notes)//
+        // console.log("all notes: ", notes)// and in server also 
         res.json(notes)
     } catch (e) {
         res.status(401).json({ message: e })
     }
 })
-route.get("/:notesId", verifyToken, isRole("user", "admin"), isNoteOwner, async (req, res) => {
+route.get("/:notesId", verifyToken, isNoteOwner, isRole("user", "admin"), isNoteOwner, async (req, res) => {
     try {
         const { notesId } = req.params;
         console.log("got id of one note B: ", notesId, req.user.userId)

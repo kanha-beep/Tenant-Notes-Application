@@ -45,16 +45,4 @@ route.post("/login", async (req, res) => {
     // console.log("token generated after login", token);
     res.json(token)
 })
-//users current user
-route.get("/me", verifyToken, async (req, res) => {
-    try {
-        const user = await User.findById(req.user.userId).populate("tenant", "name plan noteLimit");
-        // console.log("current owner NotesAuth: ", user)
-        // console.log("req.user:", req.user);
-        if (!user) return res.status(404).json({ message: "User not found" });
-        res.json(user);
-    } catch (e) {
-        res.status(500).json({ message: e.message });
-    }
-})
 export default route;
