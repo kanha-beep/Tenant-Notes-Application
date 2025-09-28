@@ -9,8 +9,9 @@ const MONGO_URI = process.env.MONGO_URI;
 const key = process.env.JWT_SECRET;
 import Tenant from "./NotesModels/TenantSchema.js";
 // "https://tenant-app-thle.vercel.app"
+const FRONTEND_URL = process.env.FRONTEND_URL
 app.use(cors({
-    origin: ["http://localhost:5173", ],
+    origin: [FRONTEND_URL || "http://localhost:5173"],
     credentials: true
 }))
 app.use(express.urlencoded({ extended: true }))
