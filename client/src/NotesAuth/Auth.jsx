@@ -50,7 +50,7 @@ export default function Auth({ setIsLoggedIn }) {
     else {
       try {
         e.preventDefault();
-        console.log("login url", url);
+        console.log("login url starts", url);
         const res = await api.post(`/api/notes/auth/${url}`, userForm);
         console.log("Login B done now F", url);
         // const role = res.data.role;

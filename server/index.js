@@ -7,9 +7,10 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI;
 const key = process.env.JWT_SECRET;
+import Tenant from "./NotesModels/TenantSchema.js";
 // "https://tenant-app-thle.vercel.app"
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", ],
     credentials: true
 }))
 app.use(express.urlencoded({ extended: true }))
@@ -21,6 +22,13 @@ async function mongooseConnect() {
         useUnifiedTopology: true,
     })
     console.log("mongoose connected")
+    // const tenant = await Tenant.create({
+    //     name: "Globex",
+    //     plan: "free",
+    //     noteLimit: 3,
+    //     paidUsers: 0
+    // })
+    // console.log("tenant creted", tenant);
 }
 mongooseConnect();
 //auth

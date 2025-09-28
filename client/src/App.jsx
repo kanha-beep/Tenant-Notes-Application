@@ -64,7 +64,6 @@ function App() {
   }, [token]);
   return (
     <>
-      {isPage ? "Online" : "Offline"}&nbsp;{userRole}
       <Navbar isLoggedIn={isLoggedIn} />
       <Routes>
         {/* <Route path="/" element={<AllUsers />} /> */}
@@ -73,7 +72,10 @@ function App() {
           <Route path="/users/:usersId" element={<Users />} />
           <Route path="/users/:usersId/edit" element={<EditUsersProfile />} />
           <Route path="/" element={<AllNotes />} />
-          <Route path="/notes" element={<AllNotes />} />
+          <Route
+            path="/notes"
+            element={<AllNotes setIsPage={setIsPage} isPage={isPage} />}
+          />
           <Route path="/notes/new" element={<NewNotes />} />
           <Route path="/notes/:notesId" element={<Notes />} />
           <Route path="/notes/:notesId/edit" element={<EditNotes />} />

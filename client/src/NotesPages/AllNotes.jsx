@@ -4,8 +4,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../init/api";
 
-export default function AllTasks() {
+export default function AllTasks({ isPage, setIsPage }) {
   // const {userId} = useParams();
+
   const tenant = localStorage.getItem("tenant") || "got";
   const [filterTenant] = useState(tenant || "are");
   const [filterTenantNotes, setFilterTenantNotes] = useState([]);
@@ -61,8 +62,9 @@ export default function AllTasks() {
           Authorization: `Bearer ${token}`,
         },
       });
-      // console.log("get all notes", res.data);
+      console.log("1. get all notes", res.data);
       setNotes(res.data);
+      setIsPage(true)
     } catch (e) {
       if (e.response.status === 401) {
         console.log("error AllNotes: ", e.response.data);
@@ -86,7 +88,6 @@ export default function AllTasks() {
           Add Note
         </button>
       </div>
-
       {owner && (
         <div
           key={owner._id}
@@ -95,7 +96,8 @@ export default function AllTasks() {
           <p>
             Current OwnerId: <b>{owner?._id}</b> <br />
             Current Owner Name: <b>{owner?.username}</b> <br />
-            Current Tenant Name: <b>{owner?.tenant?.name}</b>
+            Current Tenant Name: <b>{owner?.tenant?.name}</b> <br />
+            Status: {isPage ? "Online" : "Offline"}
           </p>
           <button
             className="btn btn-secondary rounded-4"
