@@ -3,22 +3,27 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../init/api";
+import NewButton from "../NotesComponents/Buttons/NewButton.jsx";
+import DownloadButton from "../NotesComponents/Buttons/DownloadButton.jsx";
+import SortButton from "../NotesComponents/Buttons/SortButton.jsx";
+import CurrentOwner from "../NotesAdminPages/AllUsers/CurrentOwner.jsx";
 
 export default function AllTasks({ isPage, setIsPage }) {
   // const {userId} = useParams();
 
   const tenant = localStorage.getItem("tenant") || "got";
   const [filterTenant] = useState(tenant || "are");
-  const [filterTenantNotes, setFilterTenantNotes] = useState([]);
+  const [filterNotes, setFilterNotes] = useState([]);
   const [owner, setOwner] = useState({});
   const [notes, setNotes] = useState([]);
   const token = localStorage.getItem("tokens");
   const navigate = useNavigate();
+  const [sortBy, setSortBy] = useState("");
   //tenant filter
   useEffect(() => {
     const filtered = notes.filter((n) => n.tenant?.name === filterTenant);
     console.log("Filtered Notes: ", filtered);
-    setFilterTenantNotes(filtered);
+    setFilterNotes(filtered);
   }, [filterTenant, notes, token]);
   const currentOwner = async () => {
     try {
@@ -40,7 +45,7 @@ export default function AllTasks({ isPage, setIsPage }) {
   };
   useEffect(() => {
     currentOwner();
-  }, [token, filterTenantNotes]);
+  }, [token, filterNotes]);
   const handleDelete = async (notesId) => {
     try {
       const res = await api.delete(`/api/notes/${notesId}/delete`, {
@@ -64,7 +69,7 @@ export default function AllTasks({ isPage, setIsPage }) {
       });
       console.log("1. get all notes", res.data);
       setNotes(res.data);
-      setIsPage(true)
+      setIsPage(true);
     } catch (e) {
       if (e.response.status === 401) {
         console.log("error AllNotes: ", e.response.data);
@@ -76,41 +81,44 @@ export default function AllTasks({ isPage, setIsPage }) {
   useEffect(() => {
     getAllNotes();
   }, [token]);
+
+  const sortedTasks = async (e) => {
+    const value = e.target.value;
+    setSortBy(value);
+    try {
+      const res = await api.get(`/api/notes?sortBy=${value}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setFilterNotes(res.data);
+    } catch (e) {
+      console.log("error sort", e);
+    }
+  };
   return (
     <div className="container">
-      <h1 className="p-2 text-center">All Tasks</h1>
-
+      <h1 className="p-2 text-center">All Notes</h1>
+      hello this is old allNotes
       <div className="d-flex justify-content-start mb-3">
-        <button
-          className="btn btn-primary rounded-5"
-          onClick={() => navigate("/notes/new")}
-        >
-          Add Note
-        </button>
+        <NewButton navigate={navigate} />
       </div>
-      {owner && (
-        <div
-          key={owner._id}
-          className="p-3 mb-3 rounded-5 bg-info col-12 col-sm-6 col-md-4"
-        >
-          <p>
-            Current OwnerId: <b>{owner?._id}</b> <br />
-            Current Owner Name: <b>{owner?.username}</b> <br />
-            Current Tenant Name: <b>{owner?.tenant?.name}</b> <br />
-            Status: {isPage ? "Online" : "Offline"}
-          </p>
-          <button
-            className="btn btn-secondary rounded-4"
-            onClick={() => navigate(`/users/${owner?._id}`)}
-          >
-            Go to Profile
-          </button>
-        </div>
-      )}
-
+      <div className="d-flex justify-content-start mb-3">
+        <DownloadButton notes={notes} />
+      </div>
+      <div>
+        <SortButton sortBy={sortBy} sortedTasks={sortedTasks} />
+      </div>
+      <CurrentOwner
+        owner={owner}
+        setOwner={setOwner}
+        token={token}
+        isPage={isPage}
+        navigate={navigate}
+      />
       <div className="row">
-        {filterTenantNotes &&
-          filterTenantNotes.map((n) => (
+        {filterNotes &&
+          filterNotes.map((n) => (
             <div key={n._id} className="col-12 col-sm-6 col-md-4 mb-3">
               <div className="p-3 rounded-3 bg-info shadow-sm h-100">
                 <p>
@@ -147,4 +155,25 @@ export default function AllTasks({ isPage, setIsPage }) {
       </div>
     </div>
   );
+}
+{
+  /* {owner && (
+        <div
+          key={owner._id}
+          className="p-3 mb-3 rounded-5 bg-info col-12 col-sm-6 col-md-4"
+        >
+          <p>
+            Current OwnerId: <b>{owner?._id}</b> <br />
+            Current Owner Name: <b>{owner?.username}</b> <br />
+            Current Tenant Name: <b>{owner?.tenant?.name}</b> <br />
+            Status: {isPage ? "Online" : "Offline"}
+          </p>
+          <button
+            className="btn btn-secondary rounded-4"
+            onClick={() => navigate(`/users/${owner?._id}`)}
+          >
+            Go to Profile
+          </button>
+        </div>
+      )} */
 }

@@ -1,12 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import jwt_decode from "jwt-decode";
-// import * as jwt_decode from "jwt-decode";
 import api from "../init/api";
 
 export default function Auth({ setIsLoggedIn }) {
-  // const [url, setUrl] = useState("");
-  // const [role, setRole] = useState("");
   const [isPage, setIsPage] = useState(true);
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
@@ -17,232 +13,153 @@ export default function Auth({ setIsLoggedIn }) {
     tenant: "",
     role: "",
   });
+
   const url = isPage ? "login" : "signup";
+
   const handleChange = (e) => {
     setUserForm((p) => ({ ...p, [e.target.name]: e.target.value }));
   };
-  const handleSubmitAuth = async (e) => {
-    //sign up
-    if (isPage === false) {
-      try {
-        e.preventDefault();
-        console.log("data ready", userForm, url);
-        const res = await api.post(
-          `/api/notes/auth/${url}`,
-          userForm
-          // {
-          //   headers: {
-          //     Authorization: `Bearer ${token}`,
-          //   },
-          // }
-        );
-        console.log("sign up done F: ", res.data.data);
-        // setUrl("login");
-      } catch (e) {
-        //sign up try ended
-        if (e.response.status === 401) return setMsg(e.response.data);
-        if (e.response.status === 402) return setMsg(e.response.data);
-        if (e.response.status === 403) return setMsg(e.response.data);
-        console.log(e);
-      } // sign up catch ended
-    } //if ended
-    //login
-    else {
-      try {
-        e.preventDefault();
-        console.log("login url starts", url);
-        const res = await api.post(`/api/notes/auth/${url}`, userForm);
-        console.log("Login B done now F", url);
-        // const role = res.data.role;
-        const token = res.data;
-        const parseJwt = (token) => {
-          try {
-            return JSON.parse(atob(token.split(".")[1]));
-          } catch (e) {
-            console.log("error in ADMIN LOGIN:", e);
-            return null;
-          }
-        };
-        // console.log("1. data ready for login", userForm); //
-        const decoded = parseJwt(token);
-        console.log(decoded);
-        const role = decoded.role;
-        console.log("decoding done", role); //admin
-        localStorage.setItem("tokens", token);
-        const tokenRole = decoded.role;
-        console.log("new role: ", tokenRole); //admin
-        setIsLoggedIn(true);
-        localStorage.setItem("tenant", userForm.tenant);
-        localStorage.getItem("tenant");
-        console.log("role check starts");
-        localStorage.setItem("role", role);
-        if (role === "admin") {
-          console.log("role check: ", role); //admin
 
-          navigate("/admin/dashboard"); // go to admin dashboard
-        } else {
-          console.log("role check: ", role);
-          navigate("/notes"); // go to normal notes page
-        }
+  const handleSubmitAuth = async (e) => {
+    e.preventDefault();
+    if (!isPage) {
+      try {
+        const res = await api.post(`/api/notes/auth/${url}`, userForm);
+        console.log("Sign up done: ", res.data.data);
       } catch (e) {
-        //login try ended
-        if (e.status === 401) {
-          console.log("error while login", e.response.data);
-          // setUrl("signup");
-        } else if (e.status === 402) {
-          console.log("error while login", e.response.data);
-          // setUrl("login");
+        if ([401, 402, 403].includes(e.response.status))
           setMsg(e.response.data);
-        } else if (e.status === 403) {
-          console.log("error while login", e.response.data);
-          // setUrl("login");
-          setMsg(e.response.data);
-        }
-      } //login catch ended
-    } //else ended
+        console.log(e);
+      }
+    } else {
+      try {
+        const res = await api.post(`/api/notes/auth/${url}`, userForm);
+        const token = res.data;
+        const decoded = JSON.parse(atob(token.split(".")[1]));
+        const role = decoded.role;
+        localStorage.setItem("tokens", token);
+        localStorage.setItem("tenant", userForm.tenant);
+        localStorage.setItem("role", role);
+        setIsLoggedIn(true);
+        console.log("role got", role)
+        if (role === "admin") navigate("/admin/dashboard");
+        else navigate("/notes");
+      } catch (e) {
+        if ([401, 402, 403].includes(e.status)) setMsg(e.response.data);
+      }
+    }
   };
+
   return (
-    //parent
-    <div
-      style={{
-        // backgroundColor: "aqua",
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-      className="p-2 m-2 container row justify-content-center"
-    >
-      {/* //inside parent div */}
-      <div className="row">
-        <div
-          className="col-12 col-lg-6 col-sm-8"
-          style={{
-            minHeight: "30rem", // 👈 keeps space even if fields are hidden
-            // width: "25rem",
-            background: "white",
-            borderRadius: "1rem",
-            padding: "2rem",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-          }}
-        >
-          {/* //button divs */}
-          <div
-            className="m-2 row justify-content-center"
+    <div className="container vh-100 d-flex justify-content-center align-items-center">
+      <div className="card shadow p-4 w-100" style={{ maxWidth: "600px" }}>
+        {/* Toggle Buttons */}
+        <div className="d-flex mb-3">
+          <button
+            style={{ width: "2rem" }}
+            className={`btn ${
+              isPage ? "btn-outline-primary flex-fill" : "btn-primary flex-fill"
+            } me-2`}
+            onClick={() => setIsPage(false)}
           >
-            <button
-              style={{
-                fontSize: "2rem",
-                border: "5px solid blue",
-                borderRadius: "5rem",
-              }}
-              className={`btn ${
-                isPage ? "btn-outline-primary" : "btn-primary"
-              }`}
-              onClick={() => {
-                setIsPage(false);
-              }}
-            >
-              Sign Up
-            </button>
-            <button
-              style={{
-                // display: "flex",
-                // justifyContent: "center",
-                fontSize: "2rem",
-                border: "5px solid blue",
-                borderRadius: "5rem",
-              }}
-              className={`btn ${
-                isPage ? "btn-primary" : "btn-outline-primary"
-              } ms-2`}
-              onClick={() => {
-                setIsPage(true);
-              }}
-            >
-              Login{" "}
-            </button>
-          </div>
-          {/* msg */}
-          <div className="row">
-            {msg !== "" && (
-              <div
-                className="alert alert-danger col-12 col-lg-6 col-sm-8"
-                role="alert"
-              >
-                {msg}
-              </div>
-            )}
-          </div>
-          <div className="row">
-            {isPage ? "true" : "false"}
-            <form
-              onSubmit={handleSubmitAuth}
-              className="col-12 col-lg-6 col-md-12"
-            >
-              <input
-                type="text"
-                onChange={handleChange}
-                placeholder="Email"
-                name="email"
-                value={userForm.email}
-                className="p-2 rounded-5 m-2 form-control"
-              />
-              <br />
-              <input
-                type="text"
-                onChange={handleChange}
-                placeholder="Password"
-                name="password"
-                value={userForm.password}
-                className="p-2 rounded-5 m-2 form-control"
-              />{" "}
-              <br />
-              <select
-                name="tenant"
-                value={userForm.tenant}
-                onChange={handleChange}
-                className="p-2 m-2 rounded-5"
-              >
-                <option value="" disabled>
-                  Select tenant
-                </option>
-                <option value="Acme">Acme</option>
-                <option value="Globex">Globex</option>
-              </select>
-              <br />
-              {!isPage && (
-                <>
-                  <input
-                    type="text"
-                    onChange={handleChange}
-                    placeholder="Username"
-                    name="username"
-                    value={userForm.username}
-                    className="p-2 rounded-5 m-2"
-                  />
-                  <br />
-                  <select
-                    name="role"
-                    value={userForm.role}
-                    onChange={handleChange}
-                    className="p-2 m-2 rounded-5"
-                  >
-                    <option value="" disabled>
-                      Select Role
-                    </option>
-                    <option value="user">User</option>
-                    <option value="admin">Admin</option>
-                  </select>
-                  <br />
-                </>
-              )}
-              <button className="p-2 m-2 rounded-5 btn btn-primary">
-                {isPage ? "Login" : "Sign Up"}
-              </button>
-            </form>
-          </div>
+            Sign Up
+          </button>
+          <button
+            className={`btn ${
+              isPage ? "btn-primary flex-fill" : "btn-outline-primary flex-fill"
+            }`}
+            onClick={() => setIsPage(true)}
+            style={{width:"2rem"}}
+          >
+            Login
+          </button>
         </div>
+
+        {/* Message */}
+        {msg && <div className="alert alert-danger">{msg}</div>}
+
+        {/* Form */}
+        <form
+          onSubmit={handleSubmitAuth}
+          className="p-3 row flex-column align-items-center"
+          style={{ height: "20rem" }}
+        >
+          {/* <div className="g-3 mb-3"> */}
+          <div className="col-12">
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Email"
+              name="email"
+              value={userForm.email}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="col-12">
+            <input
+              type="password"
+              className="form-control mb-2"
+              placeholder="Password"
+              name="password"
+              value={userForm.password}
+              onChange={handleChange}
+            />
+          </div>
+          {/* </div> */}
+          {/* <div className="g-3 mb-3"> */}
+          <div className="col-12">
+            <select
+              name="tenant"
+              value={userForm.tenant}
+              onChange={handleChange}
+              className="form-select mb-2"
+            >
+              <option value="" disabled>
+                Select tenant
+              </option>
+              <option value="Acme">Acme</option>
+              <option value="Globex">Globex</option>
+            </select>
+          </div>
+
+          {!isPage && (
+            <>
+              <div className="col-12">
+                <input
+                  type="text"
+                  className="form-control mb-2"
+                  placeholder="Username"
+                  name="username"
+                  value={userForm.username}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="col-12">
+                <select
+                  name="role"
+                  value={userForm.role}
+                  onChange={handleChange}
+                  className="form-select mb-2"
+                >
+                  <option value="" disabled>
+                    Select Role
+                  </option>
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+            </>
+          )}
+          {/* </div> */}
+
+          <button
+            type="submit"
+            className="btn btn-primary"
+            style={{ width: "6rem" }}
+          >
+            {isPage ? "Login" : "Sign Up"}
+          </button>
+        </form>
       </div>
     </div>
   );

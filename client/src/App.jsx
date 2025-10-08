@@ -64,7 +64,7 @@ function App() {
   }, [token]);
   return (
     <>
-      <Navbar isLoggedIn={isLoggedIn} />
+      <Navbar isLoggedIn={isLoggedIn} token={token}/>
       <Routes>
         {/* <Route path="/" element={<AllUsers />} /> */}
         <Route path="/health" element={<Health />} />

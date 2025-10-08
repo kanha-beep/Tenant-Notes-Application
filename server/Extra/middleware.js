@@ -3,8 +3,9 @@ import jwt from "jsonwebtoken"
 import Notes from "../NotesModels/NotesSchema.js"
 import Tenant from "../NotesModels/TenantSchema.js";
 const verifyToken = async (req, res, next) => {
-    const auth = req.headers["authorization"]
-    const token = auth && auth.split(" ")[1]
+    const token = req.cookies.tokenCookie;
+    // const auth = req.headers["authorization"]
+    // const token = auth && auth.split(" ")[1]
     if (!token) return res.status(401).json("No token provided");
     jwt.verify(token, key, (error, user) => {
         if (error) return res.status(401).json("Not Logged In Middleware");
@@ -17,46 +18,33 @@ const verifyToken = async (req, res, next) => {
 const isNoteOwner = async (req, res, next) => {
     try {
         console.log(req.params)
-        // const user = req.user;
-        //user password
-        // console.log("user isTenant:", user)
         const tenant = req.user.tenant;
-        //tenant
-        // console.log("tenant isTenant MW: ", tenant._id)
         const notes = await Notes.findOne({ _id: req.params.notesId, tenant: tenant._id }).populate("tenant").populate("user")
         if (!notes) return res.status(404).json({ message: "Not an owner" });
-        // console.log("notes MW: ", notes)
-        //title content user tenant
-        // console.log("notes isTenant MW: ", notes._id)
-        //tenant from note
-        // console.log("tenant form notes isTenant: ", notes.tenant._id)
-        //tenant id and tenant id from note
         if (tenant._id.toString() !== notes.tenant._id.toString()) return res.status(403).json({ message: "Unauthorized: different tenant" });
-        // if (tenant._id.toString() === notes.tenant._id.toString()) return res.status(403).json({ message: "Tenant and owner verified MW" });
-        // if (tenant.toString() !== notes.tenant.toString()) return res.status(403).json({ message: "Unauthorized: different tenant" });
         if (req.user.userId.toString() !== notes.user._id.toString()) return res.status(403).json({ message: "Unauthorized: not the owner" });
         console.log("user isTenant: ", req.user.userId, req.user.tenant.name);
         next();
     } catch (e) {
-        console.log("Error in isTenant middleware:", e);
-        res.status(500).json({ message: "Server error" });
+        console.log("Error in isNotesOwner middleware:", e);
+        res.status(500).json({ message: "Server error in verifying note owner" });
     }
 }
 const isRole = (...roles) => {
     return function (req, res, next) {
         const userRole = req.user.role.toString().toLowerCase().trim();
-        console.log(" user role MW:", userRole)
+        // console.log(" user role MW:", userRole)
         const allowedRoles = roles.map(r => r.toString().toLowerCase().trim());
-        console.log(" allowed role MW:", allowedRoles)
+        // console.log(" allowed role MW:", allowedRoles)
         // console.log("user role isRole MW:", userRole);
         if (!allowedRoles.includes(userRole)) return res.status(403).json({ message: "Forbidden: No role", user: "user", admin: "admin" });
-        console.log("roles checked isRole MW");
+        // console.log("roles checked isRole MW");
         next();
     }
 }
 const isTenantAdmin = async (req, res, next) => {
     try {
-        console.log("tenant id MW: ", req.user.tenant._id)
+        // console.log("tenant id MW: ", req.user.tenant._id)
         const tenantId = req.user.tenant._id; // from JWT
         if (!tenantId) return res.status(403).json({ message: "No tenant found in token" });
         // ensure the tenant exists
@@ -67,12 +55,12 @@ const isTenantAdmin = async (req, res, next) => {
         next();
     } catch (err) {
         console.error("Error in isTenantAdmin middleware:", err);
-        res.status(500).json({ message: "Server error" });
+        res.status(500).json({ message: "Server error in verifying admin" });
     }
 };
 const isPaid = async (req, res, next) => {
     try {
-        console.log("tenant id MW: ", req.user.tenant._id)
+        // console.log("tenant id MW: ", req.user.tenant._id)
         const tenantId = req.user.tenant._id; // from JWT
         if (!tenantId) return res.status(403).json({ message: "No tenant found in token" });
         // ensure the tenant exists
@@ -93,8 +81,7 @@ const isPaid = async (req, res, next) => {
         next();
     } catch (err) {
         console.error("Error in isTenantAdmin middleware:", err);
-        res.status(500).json({ message: "Server error" });
+        res.status(500).json({ message: "Server error in verifying amount paid" });
     }
 };
-
 export { verifyToken, isNoteOwner, isRole, isTenantAdmin, isPaid }

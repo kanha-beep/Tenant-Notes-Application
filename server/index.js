@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 dotenv.config()
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -10,12 +11,19 @@ const key = process.env.JWT_SECRET;
 import Tenant from "./NotesModels/TenantSchema.js";
 // "https://tenant-app-thle.vercel.app"
 const FRONTEND_URL = process.env.FRONTEND_URL
+// app.use(cors({
+//     origin: FRONTEND_URL || "http://localhost:5173" || "http://192.168.0.101:5173",
+//     credentials: true
+// }))
 app.use(cors({
-    origin: [FRONTEND_URL || "http://localhost:5173"],
-    credentials: true
-}))
+  origin: ["http://localhost:5173", FRONTEND_URL], // whitelist both
+  credentials: true
+}));
+
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
+app.use(cookieParser()); // MUST be before your routes/middleware
+
 
 async function mongooseConnect() {
     await mongoose.connect(`${MONGO_URI}`, {
@@ -48,6 +56,13 @@ app.use("/api/admin", AdminRoutes)
 app.get("/api/health", (req, res) => {
     res.json({ status: "ok" });
 })
-app.listen(PORT, () => {
+app.use((req, res, next) => {
+  next(new ExpressError("Page Not Found", 404));
+});
+app.use((error, req, res, next) => {
+    const { message, status=404} = error;
+    res.status(status).json(message)
+})
+app.listen(PORT, "0.0.0.0", () => {
     console.log(`listening port ${PORT}`)
 })

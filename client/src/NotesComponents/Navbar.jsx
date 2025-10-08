@@ -1,7 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import api from "../init/api";
+// import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 
-export default function Navbar({ isLoggedIn }) {
+export default function MyNavbar({ isLoggedIn, token }) {
+  const [owner, setOwner] = useState("");
+  const currentOwner = async () => {
+    try {
+      const res = await api.get("/api/admin/auth/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setOwner(res.data);
+    } catch (e) {
+      console.log("error Admin", e);
+    }
+  };
+
+  useEffect(() => {
+    currentOwner();
+  }, [token]);
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
@@ -43,11 +62,21 @@ export default function Navbar({ isLoggedIn }) {
               </>
             )}
             {isLoggedIn && (
-              <li className="nav-item">
-                <Link className="nav-link text-warning" to="/logout">
-                  Log Out
-                </Link>
-              </li>
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link text-warning" to="/logout">
+                    Log Out
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    className="nav-link text-warning"
+                    to={`/users/${owner?._id}`}
+                  >
+                    Go to Profile
+                  </Link>
+                </li>
+              </>
             )}
           </ul>
         </div>

@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-
 const notesSchema = new mongoose.Schema({
     title: String,
     content: String,
@@ -10,7 +9,8 @@ const notesSchema = new mongoose.Schema({
     tenant: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Tenant"
-    }
+    },
+    // check: false,
 })
 const Note = mongoose.model("Note", notesSchema);
 export default Note
