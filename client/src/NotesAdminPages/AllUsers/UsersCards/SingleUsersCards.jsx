@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import DeleteButton from "../../../NotesComponents/Buttons/DeleteButton.jsx";
 import EditButton from "../../../NotesComponents/Buttons/EditButton.jsx";
 import HomePageButton from "../../../NotesComponents/Buttons/HomePageButton.jsx";
@@ -9,39 +8,47 @@ export default function SingleUsersCards({
   navigate,
   notes,
   userRole,
-  onClick,
+  setCheck,
+  check,
+  toShowAdmin,
+  userId
 }) {
-  // const handleCheckBox = (e) => {
-  //   if (onClick) onClick(e.target.checked);
-  // };
+  console.log("single id...: ", userId)
+  console.log("__")
   return (
     <div>
-      start
       <div
-        key={users?._id}
-        className="m-1 p-1"
+        className="m-1 p-1 rounded col-12 col-md-5 col-lg-5"
         style={{
           backgroundColor: "aqua",
-          height: "15rem",
-          width: "15rem",
+          height: "20rem",
+          width: "20rem",
         }}
       >
         {userRole === "admin" && (
           <>
             <div>
               <p>
-                Email: <b>{users?.username} </b>
+                Username: <b>{users?.username} </b>
               </p>
             </div>
             <div>
-              <p>Email: {users.email}</p>
+              <p>
+                Email: <b> {users?.email}</b>{" "}
+              </p>
             </div>
             <div>
-              <p>Id: {users._id}</p>
+              <p>
+                Id: <b> {users?._id}</b>
+              </p>
             </div>
             <div>
-              <p>Owner: {users?.username}</p>
-              <p>tenant: {users?.tenant}</p>
+              <p>
+                Owner: <b>{users?.username} </b>
+              </p>
+              <p>
+                tenant: <b> {users?.tenant}</b>
+              </p>
             </div>
           </>
         )}{" "}
@@ -50,18 +57,12 @@ export default function SingleUsersCards({
             <p>User {notes?.content}</p>
           </>
         )}
-        {/* <button onClick={() => navigate(`/${n._id}`)} className="m-1">
-              View{" "}
-            </button> */}
-        <DeleteButton token={token} n={users} navigate={navigate} />
-        <EditButton navigate={navigate} />
-        <HomePageButton navigate={navigate} />
-        {/* <Checkbox onChange={(val) => setChecked(val)} />
-        {checked?"done":"pending" } */}
-        <input
-          type="checkbox"
-          onChange={() => onClick && onClick("send")}
-        />
+        <div className="d-flex justify-content-between">
+          <DeleteButton token={token} n={users} navigate={navigate} userId={userId} />
+          <EditButton navigate={navigate} userId={userId}/>
+          <HomePageButton navigate={navigate} />
+          <Checkbox check={check} setCheck={setCheck} toShowAdmin={toShowAdmin}/>
+        </div>
       </div>
     </div>
   );

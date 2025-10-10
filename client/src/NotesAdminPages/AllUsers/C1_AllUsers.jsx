@@ -14,9 +14,11 @@ export default function C1_AllUsers({
   setFilterUsers,
   filterUsers,
 }) {
+  console.log('find filter Notes: ', filterUsers)
   const userRole = localStorage.getItem("role");
   const location = useLocation();
-  const [toShowAdmin, setToShowAdmin] = useState(location.state);
+  const [toShowAdmin, setToShowAdmin] = useState(location.state || "");
+  localStorage.setItem("toShowAdmin", toShowAdmin);
   // get all users done
   const getAllUsers = async () => {
     try {
@@ -25,12 +27,12 @@ export default function C1_AllUsers({
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("All Users:", res.data);
+      // console.log("All Users:", res.data);
       setUsers(res.data);
-      setFilterUsers(res.data);
+      setFilterUsers(res.data?.users);
       setToShowAdmin("users");
     } catch (e) {
-      console.log("error in AllUsers:", e.response?.data);
+      console.log("error in AllUsers:", e.response);
     }
   };
   //get all notes
@@ -42,7 +44,7 @@ export default function C1_AllUsers({
         },
       });
       // console.log("1. AllNotes ", res.data);
-      setFilterNotes(res.data);
+      setFilterNotes(res.data.notes || []);
       setIsPage(true);
       setToShowAdmin("notes");
     } catch (e) {
@@ -69,36 +71,40 @@ export default function C1_AllUsers({
     }
   }, [token]);
   useEffect(() => {
-    if (!filterUsers) return <h2>Loading...</h2>;
-    filterUsers.filter((n) => {
-      return n.tenant?.name === filterTenant;
-    });
+    if (!filterUsers) return; // ❌ returning JSX inside useEffect is invalid
+    const filtered = filterUsers.filter((n) => n.tenant?.name === filterTenant);
+    setFilterUsers(filtered); // ✅ actually update state instead of returning JSX
   }, [filterTenant, token]);
-  console.log("Admin will see: ", toShowAdmin);
-  // console.log("userRole: ", userRole);
+
+  console.log("Admin will got to see came from dashboard ..: ", toShowAdmin);
+  console.log("Admin will see filter users: ", filterNotes);
   return (
+    // <div className="row justify-content-center flex-wrap">
     <div className="row" style={{ backgroundColor: "orange" }}>
       {userRole === "user" && filterNotes && (
         <>
           <h3>All Notes by Users</h3>
           <h2>{userRole}</h2>
-          {filterNotes?.map((n) => (
-            <AllUsersCards
-              key={n._id}
-              n={n}
-              navigate={navigate}
-              userRole={userRole}
-              filterNotes={filterNotes}
-            />
-          ))}
+          <div className="d-flex flex-wrap">
+            {filterNotes?.map((n) => (
+              <AllUsersCards
+                key={n._id}
+                n={n}
+                navigate={navigate}
+                userRole={userRole}
+                filterNotes={filterNotes}
+              />
+            ))}
+          </div>
         </>
       )}
       {userRole === "admin" &&
-        toShowAdmin === "users" &&
-        filterUsers.length > 0 ? (
-          <>
-            <h3>All Users By Admin</h3>
-            {filterUsers.map((u) => (
+      toShowAdmin === "users" &&
+      filterUsers?.length > 0 ? (
+        <>
+          <h3>All Users By Admin</h3>
+          <div className="d-flex flex-wrap">
+            {filterUsers?.map((u) => (
               <AllUsersCards
                 key={u._id}
                 n={u}
@@ -106,22 +112,30 @@ export default function C1_AllUsers({
                 userRole={userRole}
               />
             ))}
-          </>
-        ): <p>Loading Users...</p>}
-
-      {userRole === "admin" && toShowAdmin === "notes" && filterNotes && (
-        <>
-          <h3>All Notes by Admin</h3>
-          {filterNotes.map((n) => (
-            <AllUsersCards
-              key={n._id}
-              n={n}
-              navigate={navigate}
-              userRole={userRole}
-            />
-          ))}
+          </div>
         </>
+      ) : (
+        <p>Loading Users...</p>
       )}
+
+      {userRole === "admin" &&
+        toShowAdmin === "notes" &&
+        filterNotes.length > 0 && (
+          <>
+            <h3>All Notes by Admin</h3>
+            <div className="d-flex flex-wrap">
+              {filterNotes?.map((n) => (
+                <AllUsersCards
+                  key={n._id}
+                  n={n}
+                  navigate={navigate}
+                  userRole={userRole}
+                />
+              ))}
+            </div>
+          </>
+        )}
     </div>
+    // </div>
   );
 }

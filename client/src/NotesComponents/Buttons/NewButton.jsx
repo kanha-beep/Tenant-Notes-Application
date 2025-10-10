@@ -1,10 +1,10 @@
 import React from "react";
 
 export default function NewButton({ navigate, userRole }) {
-  console.log("role:", userRole)
+  // console.log("role:", userRole)
   return (
-    <div>
-      <div>
+    <div className="row">
+      <div className="col-12 col-md-2 col-lg-2" style={{backgroundColor:"pink"}}>
         <button
           className="btn btn-primary rounded-5 mt-2 mb-2"
           onClick={() => {

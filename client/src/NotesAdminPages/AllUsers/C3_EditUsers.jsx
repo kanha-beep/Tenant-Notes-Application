@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import HomePageButton from "../../NotesComponents/Buttons/HomePageButton.jsx";
 import api from "../../init/api";
-export default function C3_EditUsers({ navigate, userId, token }) {
+import UpdateButton from "../../NotesComponents/Buttons/UpdateButton.jsx";
+import { useNavigate, useParams } from "react-router-dom";
+export default function C3_EditUsers({ token }) {
+  const navigate = useNavigate();
+  const { userId } = useParams();
+  console.log("id..:", userId);
+  const classname = "form-control my-2";
   const [data, setData] = useState({
     username: "",
     email: "",
@@ -15,14 +21,15 @@ export default function C3_EditUsers({ navigate, userId, token }) {
   const handleEditUsers = async (e) => {
     try {
       e.preventDefault();
-      console.log("user ready", data); //
-      const res = await api.post(`/api/admin/users/${userId}/edit`, data, {
+      console.log("user ready", userId); //
+      const res = await api.patch(`/api/admin/users/${userId}/edit`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("NewUsers: ", res.data);
+      console.log("Updated User: ", res.data);
       navigate("/admin/users");
+      console.log("navigate")
     } catch (e) {
       console.log("error NewUsers F:", e.response.data);
     }
@@ -35,9 +42,10 @@ export default function C3_EditUsers({ navigate, userId, token }) {
           <input
             type="text"
             onChange={handleChange}
-            placeholder="Name of User"
+            placeholder="Username of User"
             name="username"
             value={data.username}
+            className={`${classname}`}
           />
           <input
             type="text"
@@ -45,6 +53,7 @@ export default function C3_EditUsers({ navigate, userId, token }) {
             placeholder="Email of User"
             name="email"
             value={data.email}
+            className={`${classname}`}
           />
           <input
             type="text"
@@ -52,6 +61,7 @@ export default function C3_EditUsers({ navigate, userId, token }) {
             placeholder="Password of User"
             name="password"
             value={data.password}
+            className={`${classname}`}
           />
           <input
             type="text"
@@ -59,6 +69,7 @@ export default function C3_EditUsers({ navigate, userId, token }) {
             placeholder="Title of User"
             name="title"
             value={data.title}
+            className={`${classname}`}
           />
           <input
             type="text"
@@ -66,8 +77,9 @@ export default function C3_EditUsers({ navigate, userId, token }) {
             placeholder="Content of User"
             name="content"
             value={data.content}
+            className={classname}
           />
-          <button> Update </button>
+          <UpdateButton userId={userId}/>
         </form>
         <br />
         <HomePageButton navigate={navigate} />

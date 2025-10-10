@@ -14,7 +14,7 @@ import ProtectedRoute from "./NotesPages/ProtectedRoute.jsx";
 //users by admin
 // import NewUsers from "./NotesAdminPages/NewUsers.jsx";
 import C3_EditUsers from "./NotesAdminPages/AllUsers/C3_EditUsers.jsx";
-import Dashboard from "./NotesAdminPages/Dashboard.jsx";
+import Dashboard from "./NotesAdminPages/Dashboard/Dashboard.jsx";
 import Plan from "./NotesAdminPages/Plan.jsx";
 import Health from "./NotesAdminPages/Health.jsx";
 import { useState } from "react";

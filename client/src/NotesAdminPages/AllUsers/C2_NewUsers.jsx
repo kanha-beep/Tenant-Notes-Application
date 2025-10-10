@@ -14,24 +14,24 @@ export default function C2_NewUsers({ navigate, msg, token }) {
         headers: { Authorization: `Bearer ${localStorage.getItem("tokens")}` },
       });
       console.log("single user: ", res.data);
-      setUsers(res.data)
+      setUsers(res.data);
     };
     getSingleUser();
   }, []);
   console.log("users: ", users);
   return (
-    <div>
+    <div className="row">
       <Msg msg={msg} />
-      {users && (
-        <NewUsersCards
-          users={users}
-          token={token}
-          navigate={navigate}
-          n={users}
-        />
-      )}
-      <br />
-      card ends
+      {/* <div className="col-12 col-md-5 col-lg-10"> */}
+        {users && (
+          <NewUsersCards
+            users={users}
+            token={token}
+            navigate={navigate}
+            n={users}
+          />
+        )}
+      {/* </div> */}
     </div>
   );
 }

@@ -13,7 +13,9 @@ export default function C4_SingleUsers() {
   const [msg, setMsg] = useState("");
   const { userId, notesId } = useParams();
   const [check, setCheck] = useState("");
-
+  const toShowAdmin = localStorage.getItem("toShowAdmin");
+  console.log("admin will get id....:", userId);
+  //get one user details by admin
   const getOneUserNotes = async () => {
     try {
       const res = await api.get(`/api/admin/users/${userId}`, {
@@ -28,6 +30,7 @@ export default function C4_SingleUsers() {
       setMsg(e.response.data.message);
     }
   };
+  //get one note detail for user
   const getOneTasks = async () => {
     try {
       const res = await api.get(`/api/notes/${notesId}`, {
@@ -42,44 +45,89 @@ export default function C4_SingleUsers() {
       setMsg(e.response.data.message);
     }
   };
+  //update notes
+  const updateOneTasks = async () => {
+    try {
+      const res = await api.patch(
+        `/api/notes/${notesId}`,
+        { check: check },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("updated Note: ", res.data);
+      setNotes(res.data);
+    } catch (e) {
+      console.log("error Notes: ", e.response.data.message);
+      setMsg(e.response.data.message);
+    }
+  };
+  //execute update function
+  useEffect(() => {
+    if (check === "") return;
+    updateOneTasks();
+  }, [check]);
+  //auto checks the updated value on render
+  useEffect(() => {
+    if (notes) setCheck(notes.check); // sync checkbox state with backend
+  }, [notes]);
+  //auto render the notes value
   useEffect(() => {
     if (userRole === "admin") getOneUserNotes();
     else getOneTasks();
   }, []);
-  console.log("notes", check);
-  // const handleCheck = async () => {
-  //   const res = await api.post(
-  //     `/api/notes/${notesId}`,
-  //     { check: check },
-  //     { headers: { Authorization: `Bearer ${token}` } }
-  //   );
-  //   console.log("res for check", res);
-  // };
   return (
-    <div>
-      <h2> Final SIngle User</h2>
+    <div className="row">
+      <h2 className="text-center">
+        {userRole === "users"
+          ? "Single Note"
+          : toShowAdmin === "users"
+          ? "Single User"
+          : "Single Notes by Admin"}
+      </h2>
       <Msg msg={msg} />
-      {userRole === "admin" && users && (
+      {userRole === "admin" && toShowAdmin === "users" && (
         <SingleUsersCards
           users={users}
           token={token}
           navigate={navigate}
+          key={users?._id}
           n={users}
           userRole={userRole}
-          onClick={(val) => setCheck(val)}
+          setCheck={setCheck}
+          toShowAdmin={toShowAdmin}
+          userId={userId}
         />
-      )}{" "}
+      )}
+      {userRole === "admin" && toShowAdmin === "notes" && (
+        <SingleUsersCards
+          users={users}
+          token={token}
+          navigate={navigate}
+          key={users?._id}
+          n={notes}
+          userRole={userRole}
+          setCheck={setCheck}
+          toShowAdmin={toShowAdmin}
+          userId={userId}
+        />
+      )}
       {userRole === "user" && notes && (
         <SingleUsersCards
+          key={users?._id}
           users={users}
           token={token}
           navigate={navigate}
           notes={notes}
           userRole={userRole}
-          onClick={(val) => setCheck(val)}
+          check={check}
+          setCheck={setCheck}
+          toShowAdmin={toShowAdmin}
+          userId={userId}
         />
       )}
-      value in real {check}
     </div>
   );
 }

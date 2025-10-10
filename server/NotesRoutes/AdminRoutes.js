@@ -7,6 +7,7 @@ import Notes from "../NotesModels/NotesSchema.js"
 import { verifyToken, isTenantAdmin, isRole } from "../Extra/middleware.js";
 import Tenant from "../NotesModels/TenantSchema.js";
 import wrapAsync from "../Extra/WrapAsync.js";
+import ExpressError from "../Extra/ExpressError.js"
 //admin
 //api/admin/auth/me
 route.get("/auth/me", verifyToken, wrapAsync(async (req, res, next) => {
@@ -54,36 +55,41 @@ route.post("/plan", verifyToken, isTenantAdmin, isRole(["admin"]), wrapAsync(asy
 }))
 //all users
 route.get("/users", verifyToken, isTenantAdmin, isRole("admin"), wrapAsync(async (req, res, next) => {
-    const searchUser = req.query.search || "";
-    const sort = req.query.sort || "";
+    // const searchUser = req.query.search || "";
+    // const sort = req.query.sort || "";
+    console.log("got value: ", req.query)
+    const search = req.query.search || "";
+    const sort = req.query.sort || "email";
+    const page = parseInt(req.query.page) || 1;
+    const limit = 5;
+    const skip = (page - 1) * limit;
     console.log("1. sort: ", sort)
     const users = await User.find({ role: "user", tenant: req.user.tenant });
     if (!users) return next(new ExpressError(401, "No user AdminRoute"))
-    const searchedUser = users.filter((u) => (u.username?.toLowerCase().includes(searchUser.toLowerCase())))
-    // console.log("tenant found AdminRoute: ", searchedUser)
-    const sortedUser = [...searchedUser].sort((a, b) => {
-        // if (sort === "content" || "title") return a.username.localeCompare(b.username);
-        // if (sort === "title") return a.title.localeCompare(b.title);
-        if (sort === "username") return (a.username || "").toLowerCase().localeCompare(b.username.toLowerCase());
-        if (sort === "email") return (a.email || "").toLowerCase().localeCompare(b.email.toLowerCase());
-        return 0;
-    })
-    // console.log("now search user is being set", sortedUser)
-    const finalSortedUser = sortedUser.length ? sortedUser : searchedUser;
-    // console.log("now search user is being set", finalSortedUser)
-    res.json(finalSortedUser);
+    const query = {};
+    //search
+    if (search) query.username = { $regex: search, $options: "i" }
+    //sort
+    const sortOptions = {}
+    if (sort === "username") sortOptions.username = 1;
+    if (sort === "email") sortOptions.email = 1;
+    const finalUsers = await User.find(query).sort(sortOptions).skip(skip).limit(limit)
+    const totalUsers = await User.countDocuments(query);
+    const totalPages = Math.ceil(totalUsers / limit);
+    // console.log("now search user is being set", finalUsers)
+    res.json({ users: finalUsers, totalUsers: totalUsers, totalPages: totalPages, page: page });
 }))
 //new user
 route.post("/users/new", verifyToken, isTenantAdmin, isRole(["admin"]), wrapAsync(async (req, res, next) => {
 
     console.log("getting user id new: ", req.params)
-    const { username, password, email, title, content } = req.body;
+    const { username, email, title, content } = req.body;
     const tenant = await Tenant.findOne({ name: "Acme" });
     if (!tenant) return next(new ExpressError(402, "No tenant to save"))
     // console.log("tenant found new user", tenant)
-    const users = await User.create({ username, email, password, title, content, role: "user", tenant: tenant._id });
+    const users = await User.create({ username, email, password: "password", title, content, role: "user", tenant: tenant._id });
     if (!users) return next(new ExpressError(401, "No user to create"))
-    // console.log("user created AdminRoute: ", users)
+    console.log("user created AdminRoute: ", users)
     res.json(users);
 
 }))
@@ -101,15 +107,14 @@ route.get("/users/:userId", verifyToken, isTenantAdmin, isRole(["admin"]), wrapA
 //users change
 route.patch("/users/:userId/edit", verifyToken, isTenantAdmin, isRole(["admin"]), wrapAsync(async (req, res, next) => {
 
-    console.log("req.params user Change AdminRoutes: ", req.params)
+    // console.log("req.params user Change AdminRoutes: ", req.params)
     const { userId } = req.params;
     console.log("req.body user change AdminRoutes: ", req.body);
-    const { username } = req.body;
-    const users = await User.findByIdAndUpdate(userId, { username });
+    const { username, email, password, title, content } = req.body;
+    const users = await User.findByIdAndUpdate(userId, { username, email, password, title, content }, {new:true});
     if (!users) return next(new ExpressError(401, "No user AdminRoute"))
     console.log("user changed AdminRoute: ", users)
     res.json(users);
-    e
 }))
 //users delete
 route.delete("/users/:userId", verifyToken, isTenantAdmin, isRole(["admin"]), wrapAsync(async (req, res, next) => {

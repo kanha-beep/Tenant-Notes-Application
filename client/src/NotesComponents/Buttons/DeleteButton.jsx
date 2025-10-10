@@ -15,7 +15,7 @@ export default function DeleteButton({ token, n, navigate }) {
   };
   return (
     <div>
-      <button className="p-2 rounded" onClick={() => handleDelete(n._id)}>
+      <button className="p-2 rounded btn btn-outline-secondary" onClick={() => handleDelete(n._id)}>
         Delete
       </button>
     </div>

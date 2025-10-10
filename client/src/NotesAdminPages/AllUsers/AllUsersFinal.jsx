@@ -4,6 +4,8 @@ import C1_AllUsers from "./C1_AllUsers.jsx";
 import NewButton from "../../NotesComponents/Buttons/NewButton.jsx";
 import SearchButton from "../../NotesComponents/Buttons/SearchButton.jsx";
 import SortButton from "../../NotesComponents/Buttons/SortButton.jsx";
+import PageButtons from "../../NotesComponents/Buttons/PageButtons.jsx";
+import SwitchMode from "../../NotesComponents/Buttons/SwitchMode.jsx";
 
 export default function AllUsersFinal() {
   const [msg, setMsg] = useState("");
@@ -16,12 +18,14 @@ export default function AllUsersFinal() {
   const [filterNotes, setFilterNotes] = useState([]);
   const location = useLocation();
   const [toShowAdmin, setToShowAdmin] = useState(location.state);
+  localStorage.setItem("toShowAdmin", toShowAdmin)
   const [filterUsers, setFilterUsers] = useState([]);
-  console.log("admin will get", toShowAdmin)
+  const [mode, setMode] = useState(false);
+  console.log("admin will get", toShowAdmin);
   return (
-    <div>
+    <div className={`${mode ? "bg-dark text-white" : "bg-light text-dark"}`}>
       <h1 className="text-center">All Users</h1>
-      <SearchButton
+      {/* <SearchButton
         token={token}
         setUsers={setUsers}
         setNotes={setNotes}
@@ -31,9 +35,9 @@ export default function AllUsersFinal() {
         toShowAdmin={toShowAdmin}
         setFilterUsers={setFilterUsers}
         filterUsers={filterUsers}
-      />
-      <NewButton navigate={navigate} userRole={userRole}/>
-      <SortButton
+      /> */}
+      <NewButton navigate={navigate} userRole={userRole} />
+      {/* <SortButton
         userRole={userRole}
         token={token}
         setUsers={setUsers}
@@ -45,7 +49,19 @@ export default function AllUsersFinal() {
         toShowAdmin={toShowAdmin}
         setToShowAdmin={setToShowAdmin}
         className="p-10"
+      /> */}
+      <PageButtons
+        token={token}
+        setFilterNotes={setFilterNotes}
+        userRole={userRole}
+        setUsers={setUsers}
+        setNotes={setNotes}
+        filterNotes={filterNotes}
+        toShowAdmin={toShowAdmin}
+        setToShowAdmin={setToShowAdmin}
+        setFilterUsers={setFilterUsers}
       />
+      <SwitchMode mode={mode} setMode={setMode} />
       <C1_AllUsers
         navigate={navigate}
         owner={owner}

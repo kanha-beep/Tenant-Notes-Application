@@ -91,7 +91,7 @@ export default function AllTasks({ isPage, setIsPage }) {
           Authorization: `Bearer ${token}`,
         },
       });
-      setFilterNotes(res.data);
+      setFilterNotes(res.data.notes || []);
     } catch (e) {
       console.log("error sort", e);
     }

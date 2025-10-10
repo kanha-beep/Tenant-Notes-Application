@@ -17,10 +17,10 @@ export default function DownloadButton({ notes }) {
     link.remove();
   };
   return (
-    <div>
+    <div className="row">
       {" "}
       <button
-        className="btn btn-primary rounded-5"
+        className="btn btn-primary rounded-5 w-100 w-md-auto"
         onClick={handleDownloadUsers}
       >
         Download All Users Pdf

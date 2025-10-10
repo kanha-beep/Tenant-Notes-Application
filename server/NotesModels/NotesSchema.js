@@ -10,7 +10,10 @@ const notesSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Tenant"
     },
-    // check: false,
+    check: {
+        type: Boolean,
+        default: false
+    }
 })
 const Note = mongoose.model("Note", notesSchema);
 export default Note

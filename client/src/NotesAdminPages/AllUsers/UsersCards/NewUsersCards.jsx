@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../../init/api.js";
+import PlanButton from "../../../NotesComponents/Buttons/PlanButton.jsx";
+import CreateButton from "../../../NotesComponents/Buttons/CreateButton.jsx";
+import HomePageButton from "../../../NotesComponents/Buttons/HomePageButton.jsx";
 
 export default function NewUsersCards() {
-  // const userRole = localStorage.getItem("role")
+  const userRole = localStorage.getItem("role");
+  console.log("role we got: 11 ", userRole);
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const token = localStorage.getItem("tokens");
-  const [data, setData] = useState({ title: "", content: "" });
+  const [data, setData] = useState({ title: "", content: "", email:"", username:"" });
   const handleChange = (e) => {
     setData((p) => ({ ...p, [e.target.name]: e.target.value }));
   };
@@ -21,7 +25,7 @@ export default function NewUsersCards() {
         },
       });
       console.log("NewNotes: ", res.data);
-      navigate("/notes");
+      navigate("/admin/users");
     } catch (e) {
       console.log("error NewNotes F:", typeof e.response.data);
       setMsg(e.response.data);
@@ -29,51 +33,56 @@ export default function NewUsersCards() {
   };
   return (
     <div className="container">
-      <h1 className="text-center"> Add Note Here by Admin </h1>
+      <h1 className="text-center"> Add Users Here by Admin </h1>
       <div className="row">
         {msg !== "" && (
-          <div className="alert alert-danger col-12 col-lg-6 col-sm-8" role="alert">
+          <div
+            className="alert alert-danger col-12 col-lg-6 col-sm-8"
+            role="alert"
+          >
             {msg} &nbsp;&nbsp;&nbsp;
-            <button
-              className="rounded p-1 m-3"
-              onClick={() => navigate("/admin/plan")}
-            >
-              Plan Buy
-            </button>
+            <PlanButton />
           </div>
         )}
       </div>
-      hello
-      <div className="row">
-        <form onSubmit={handleCreateUser} className="col-12 col-lg-6 col-sm-8">
+      <div className="row justify-content-center">
+        <form onSubmit={handleCreateUser} className="col-12 col-lg-6 col-md-8">
           <input
             type="text"
             onChange={handleChange}
-            placeholder="Title of Note"
-            name="title"
-            value={data.title}
-            className="form-control"
+            placeholder="Username of User"
+            name="username"
+            value={data.username}
+            className="form-control my-3"
           />
           <input
             type="text"
             onChange={handleChange}
-            placeholder="Content of Note"
+            placeholder="Email of User"
+            name="email"
+            value={data.email}
+            className="form-control my-3"
+          />
+          <input
+            type="text"
+            onChange={handleChange}
+            placeholder="Title of User"
+            name="title"
+            value={data.title}
+            className="form-control my-3"
+          />
+          <input
+            type="text"
+            onChange={handleChange}
+            placeholder="Content of User"
             name="content"
             value={data.content}
             className="form-control my-3"
           />
-          <button className="btn btn-outline-secondary mb-3">Create </button>
+          <CreateButton />
         </form>
       </div>
-
-      <button
-        onClick={() => {
-          navigate("/");
-        }}
-        className="btn btn-outline-primary mt-4"
-      >
-        HomePage
-      </button>
+      <HomePageButton />
     </div>
   );
 }

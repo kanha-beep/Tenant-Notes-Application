@@ -1,78 +1,80 @@
-import React, { useState } from "react";
-import api from "../../init/api";
+// import api from "../../init/api";
 
 export default function SortButton({
-  token,
+  // token,
   userRole,
-  filterUsers,
-  setFilterUsers,
-  setFilterNotes,
+  // filterUsers,
+  // setFilterUsers,
+  // setFilterNotes,
   toShowAdmin,
+  sortBy,
+  setSortBy,
+  // onSort,
   // setToShowAdmin,
 }) {
-  const [sortBy, setSortBy] = useState("");
-  const sortedTasks = async (e) => {
-    const value = e.target.value;
-    setSortBy(value);
-    if (userRole === "admin") {
-      if (toShowAdmin === "users") {
-        try {
-          console.log("value of sort: ", value);
-          const res = await api.get(`/api/admin/users?sort=${value}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          console.log("1. sorted users: ", res.data);
-          setFilterUsers(res.data);
-          // setFilterNotes(res.data);
-          // console.log("sort Button: ", res.data);
-        } catch (e) {
-          console.log("error sort: ", e.response?.data || e.message);
-        }
-      } else {
-        //notes by admin
-        try {
-          console.log("value of sort: ", value);
-          const res = await api.get(`/api/notes?sort=${value}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          console.log("2. sorted notes: ", res.data);
-          setFilterNotes(res.data);
-          // setFilterNotes(res.data);
-          // console.log("sort Button: ", res.data);
-        } catch (e) {
-          console.log("error sort: ", e.response?.data || e.message);
-        }
-      }
-    } else {
-      try {
-        console.log("value of sort: ", value);
-        const res = await api.get(`/api/notes?sort=${value}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log("3. sorted notes: ", res.data);
-        setFilterNotes(res.data);
-        // setFilterNotes(res.data);
-        // console.log("sort Button: ", res.data);
-      } catch (e) {
-        console.log("error sort: ", e.response?.data || e.message);
-      }
-    }
-  };
-  console.log("filtered in sort: ", sortBy);
+  // const sortedTasks = async (e) => {
+  //   const value = e.target.value;
+  //   setSortBy(value);
+  //   if (userRole === "admin") {
+  //     if (toShowAdmin === "users") {
+  //       try {
+  //         console.log("value of sort: ", value);
+  //         const res = await api.get(`/api/admin/users?sort=${value}`, {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         });
+  //         console.log("1. sorted users: ", res.data);
+  //         setFilterUsers(res.data.notes || []);
+  //         // setFilterNotes(res.data);
+  //         // console.log("sort Button: ", res.data);
+  //       } catch (e) {
+  //         console.log("error sort: ", e.response?.data || e.message);
+  //       }
+  //     } else {
+  //       //notes by admin
+  //       try {
+  //         console.log("value of sort: ", value);
+  //         const res = await api.get(`/api/notes?sort=${value}`, {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         });
+  //         console.log("2. sorted notes: ", res.data);
+  //         setFilterNotes(res.data.notes || []);
+  //         // setFilterNotes(res.data);
+  //         // console.log("sort Button: ", res.data);
+  //       } catch (e) {
+  //         console.log("error sort: ", e.response?.data || e.message);
+  //       }
+  //     }
+  //   } else {
+  //     try {
+  //       console.log("value of sort: ", value);
+  //       const res = await api.get(`/api/notes?sort=${value}`, {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+  //       console.log("3. sorted notes: ", res.data);
+  //       setFilterNotes(res.data.notes || []);
+  //       // setFilterNotes(res.data);
+  //       // console.log("sort Button: ", res.data);
+  //     } catch (e) {
+  //       console.log("error sort: ", e.response?.data || e.message);
+  //     }
+  //   }
+  // };
+  console.log("filtered in sort: ", userRole, toShowAdmin);
   return (
     <div>
+      dc
       {userRole === "admin" && toShowAdmin === "users" && (
         <>
           <label>Users By Admin</label>
           <select
             value={sortBy}
-            onChange={sortedTasks}
+            onChange={(e) => setSortBy(e.target.value)}
             className="p-2 m-1 rounded"
           >
             <option value="">Select</option>
@@ -86,7 +88,7 @@ export default function SortButton({
           <label>Notes by Admin</label>
           <select
             value={sortBy}
-            onChange={sortedTasks}
+            onChange={(e) => setSortBy(e.target.value)}
             className="p-2 m-1 rounded"
           >
             <option value="">Select</option>
@@ -100,7 +102,7 @@ export default function SortButton({
           <label>Notes by User</label>
           <select
             value={sortBy}
-            onChange={sortedTasks}
+            onChange={(e) => setSortBy(e.target.value)}
             className="p-2 m-1 rounded"
           >
             <option value="">Select</option>
