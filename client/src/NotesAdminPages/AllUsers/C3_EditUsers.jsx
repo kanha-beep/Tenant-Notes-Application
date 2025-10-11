@@ -29,15 +29,15 @@ export default function C3_EditUsers({ token }) {
       });
       console.log("Updated User: ", res.data);
       navigate("/admin/users");
-      console.log("navigate")
+      console.log("navigate");
     } catch (e) {
       console.log("error NewUsers F:", e.response.data);
     }
   };
   return (
-    <div>
-      <div>
-        <h1> Edit Users Here </h1>
+    <div className="row justify-content-center">
+      <h1 className="text-center"> Edit Users Here </h1>
+      <div className="col-6 col-md-6 col-lg-5 bg-dark">
         <form onSubmit={handleEditUsers}>
           <input
             type="text"
@@ -79,7 +79,7 @@ export default function C3_EditUsers({ token }) {
             value={data.content}
             className={classname}
           />
-          <UpdateButton userId={userId}/>
+          <UpdateButton userId={userId} />
         </form>
         <br />
         <HomePageButton navigate={navigate} />

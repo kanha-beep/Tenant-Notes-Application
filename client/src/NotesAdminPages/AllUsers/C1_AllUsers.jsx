@@ -48,13 +48,14 @@ export default function C1_AllUsers({
       setIsPage(true);
       setToShowAdmin("notes");
     } catch (e) {
-      if (e.response.status === 401) {
-        console.log("error AllNotes: ", e.response.data);
-      } else if (e.response.status === 403) {
-        console.log("error AllNotes: ", e.response.data.message);
-      } else {
-        console.log("error in users: ", e.response?.data);
-      }
+      console.log("error: ", e?.response?.status, e.response?.data?.message)
+      // if (e.response.status === 401) {
+      //   console.log("error AllNotes: ", e.response.data.message);
+      // } else if (e.response.status === 403) {
+      //   console.log("error AllNotes: ", e.response.data.message);
+      // } else {
+      //   console.log("error in users: ", e.response?.data);
+      // }
     }
   };
   //call all users or notes

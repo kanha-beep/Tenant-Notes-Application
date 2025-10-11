@@ -1,7 +1,7 @@
 import ViewButton from "../../../NotesComponents/Buttons/ViewButton.jsx";
 export default function AllUsersCards({ n, navigate, userRole }) {
   const toShowAdmin = localStorage.getItem("toShowAdmin");
-  console.log("AllUsersCards.jsx: ", n);
+  // console.log("AllUsersCards.jsx: ", n);
   return (
     <div
       key={n?._id}

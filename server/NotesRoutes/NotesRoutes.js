@@ -56,7 +56,7 @@ route.get("/", verifyToken, isRole("user", "admin"), wrapAsync(async (req, res, 
     res.json({ page:page, totalPages: Math.ceil(totalNotes / limit), totalNotes: totalNotes, notes: finalPagination })
 }))
 
-route.get("/:notesId", verifyToken, isNoteOwner, isRole("user", "admin"), isNoteOwner, wrapAsync(async (req, res, next) => {
+route.get("/:notesId", verifyToken, isNoteOwner, isRole("user", "admin"), wrapAsync(async (req, res, next) => {
 
     const { notesId } = req.params;
     // console.log("1. got id of one note B: ", notesId, req.user.userId, req.body)
@@ -74,7 +74,7 @@ route.get("/:notesId", verifyToken, isNoteOwner, isRole("user", "admin"), isNote
 
 }))
 //update check
-route.patch("/:notesId", verifyToken, isNoteOwner, isRole("user", "admin"), isNoteOwner, async (req, res, next) => {
+route.patch("/:notesId", verifyToken, isNoteOwner, isRole("user", "admin"), async (req, res, next) => {
     try {
         // console.log("check starts")
         const { notesId } = req.params;

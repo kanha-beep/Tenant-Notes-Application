@@ -8,7 +8,7 @@ export default function ViewButton({ n }) {
   console.log("admin will get to see what...from dashboard..", toShowAdmin);
   return (
     <div>
-      {userRole === "users" && (
+      {userRole === "user" && (
         <button
           onClick={() => {
             navigate(`/notes/${n?._id}`);
@@ -18,7 +18,7 @@ export default function ViewButton({ n }) {
           View Note by User{" "}
         </button>
       )}
-      {userRole === "admin" && toShowAdmin === "users" ? (
+      {userRole === "admin" && toShowAdmin === "users" && (
         <button
           onClick={() => {
             navigate(`/admin/users/${n?._id}`);
@@ -27,11 +27,12 @@ export default function ViewButton({ n }) {
         >
           View User by Admin{" "}
         </button>
-      ) : (
+      )}
+      {userRole === "admin" && toShowAdmin === "notes" && (
         <button
           onClick={() => {
             navigate(`/notes/${n?._id}`);
-            console.log(`874 & ${n?._id}`)
+            console.log(`874 & ${n?._id}`);
           }}
           className="m-1 btn btn-secondary rounded-4"
         >

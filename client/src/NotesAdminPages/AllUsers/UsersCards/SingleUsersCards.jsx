@@ -6,35 +6,36 @@ export default function SingleUsersCards({
   users,
   token,
   navigate,
-  notes,
+  n,
   userRole,
   setCheck,
   check,
   toShowAdmin,
-  userId
+  userId,
+  notesId,
 }) {
-  console.log("single id...: ", userId)
-  console.log("__")
+  // console.log("single id...: ", n);
+  console.log("__");
   return (
-    <div>
+    <div className="row justify-content-center">
       <div
-        className="m-1 p-1 rounded col-12 col-md-5 col-lg-5"
+        className="m-1 p-1 rounded"
         style={{
           backgroundColor: "aqua",
           height: "20rem",
           width: "20rem",
         }}
       >
-        {userRole === "admin" && (
+        {userRole === "admin" && toShowAdmin === "users" && (
           <>
             <div>
               <p>
-                Username: <b>{users?.username} </b>
+                Username: <b>{n?.username} </b>
               </p>
             </div>
             <div>
               <p>
-                Email: <b> {users?.email}</b>{" "}
+                Email: <b> {n?.email}</b>{" "}
               </p>
             </div>
             <div>
@@ -52,16 +53,43 @@ export default function SingleUsersCards({
             </div>
           </>
         )}{" "}
+        {userRole === "admin" && toShowAdmin === "notes" && (
+          <>
+            <div>
+              <p>
+                Title: <b>{n?.title} </b>
+              </p>
+            </div>
+            <div>
+              <p>
+                Content: <b> {n?.content}</b>{" "}
+              </p>
+            </div>
+          </>
+        )}
         {userRole === "user" && (
           <>
-            <p>User {notes?.content}</p>
+            <p>User {n?.content}</p>
           </>
         )}
         <div className="d-flex justify-content-between">
-          <DeleteButton token={token} n={users} navigate={navigate} userId={userId} />
-          <EditButton navigate={navigate} userId={userId}/>
-          <HomePageButton navigate={navigate} />
-          <Checkbox check={check} setCheck={setCheck} toShowAdmin={toShowAdmin}/>
+          <DeleteButton
+            token={token}
+            n={users}
+            navigate={navigate}
+            userId={userId}
+          />
+          <EditButton navigate={navigate} userId={userId} notesId={notesId} />
+          <HomePageButton
+            navigate={navigate}
+            toShowAdmin={toShowAdmin}
+            userRole={userRole}
+          />
+          <Checkbox
+            check={check}
+            setCheck={setCheck}
+            toShowAdmin={toShowAdmin}
+          />
         </div>
       </div>
     </div>

@@ -29,7 +29,7 @@ export default function Right({ className, details }) {
       </div>
       <div className="d-flex mt-1">
         {/* //left - targets */}
-        <div className="left col-6 col-md-5 col-lg-6">
+        <div className="left col-6 col-md-6 col-lg-6">
           {/* //left - calendar events */}
           <Calendar onChange={setValue} value={value} />
           <div className="d-flex mt-3 justify-content-evenly" style={{maxWidth:"22rem", backgroundColor:"pink"}}>
@@ -38,7 +38,7 @@ export default function Right({ className, details }) {
           </div>
         </div>
         {/* //right - Avg */}
-        <div className="right col-6 col-md-5 col-lg-6">
+        <div className="right col-6 col-md-6 col-lg-6">
           <div className="avg w-100 h-100" style={{backgroundColor:"yellow"}}>
             <p className="text-center">Targets</p>
           </div>

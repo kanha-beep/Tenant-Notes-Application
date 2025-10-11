@@ -14,7 +14,7 @@ export default function C4_SingleUsers() {
   const { userId, notesId } = useParams();
   const [check, setCheck] = useState("");
   const toShowAdmin = localStorage.getItem("toShowAdmin");
-  console.log("admin will get id....:", userId);
+  // console.log("admin will get id....:", location.pathname);
   //get one user details by admin
   const getOneUserNotes = async () => {
     try {
@@ -33,6 +33,7 @@ export default function C4_SingleUsers() {
   //get one note detail for user
   const getOneTasks = async () => {
     try {
+      console.log("get notes");
       const res = await api.get(`/api/notes/${notesId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -57,7 +58,7 @@ export default function C4_SingleUsers() {
           },
         }
       );
-      console.log("updated Note: ", res.data);
+      // console.log("updated Note: ", res.data);
       setNotes(res.data);
     } catch (e) {
       console.log("error Notes: ", e.response.data.message);
@@ -75,11 +76,12 @@ export default function C4_SingleUsers() {
   }, [notes]);
   //auto render the notes value
   useEffect(() => {
-    if (userRole === "admin") getOneUserNotes();
+    if (userRole === "admin" && toShowAdmin === "users") getOneUserNotes();
     else getOneTasks();
   }, []);
+  // console.log("one note: ", notes);
   return (
-    <div className="row">
+    <div className="row justify-content-center">
       <h2 className="text-center">
         {userRole === "users"
           ? "Single Note"
@@ -87,47 +89,52 @@ export default function C4_SingleUsers() {
           ? "Single User"
           : "Single Notes by Admin"}
       </h2>
-      <Msg msg={msg} />
-      {userRole === "admin" && toShowAdmin === "users" && (
-        <SingleUsersCards
-          users={users}
-          token={token}
-          navigate={navigate}
-          key={users?._id}
-          n={users}
-          userRole={userRole}
-          setCheck={setCheck}
-          toShowAdmin={toShowAdmin}
-          userId={userId}
-        />
-      )}
-      {userRole === "admin" && toShowAdmin === "notes" && (
-        <SingleUsersCards
-          users={users}
-          token={token}
-          navigate={navigate}
-          key={users?._id}
-          n={notes}
-          userRole={userRole}
-          setCheck={setCheck}
-          toShowAdmin={toShowAdmin}
-          userId={userId}
-        />
-      )}
-      {userRole === "user" && notes && (
-        <SingleUsersCards
-          key={users?._id}
-          users={users}
-          token={token}
-          navigate={navigate}
-          notes={notes}
-          userRole={userRole}
-          check={check}
-          setCheck={setCheck}
-          toShowAdmin={toShowAdmin}
-          userId={userId}
-        />
-      )}
+      <div className="col-10 col-md-10 col-lg-10 bg-dark">
+        <Msg msg={msg} />
+        {userRole === "admin" && toShowAdmin === "users" && (
+          <SingleUsersCards
+            users={users}
+            token={token}
+            navigate={navigate}
+            key={users?._id}
+            n={users}
+            userRole={userRole}
+            setCheck={setCheck}
+            toShowAdmin={toShowAdmin}
+            userId={userId}
+            notesId={notesId}
+          />
+        )}
+        {userRole === "admin" && toShowAdmin === "notes" && (
+          <SingleUsersCards
+            users={users}
+            token={token}
+            navigate={navigate}
+            key={users?._id}
+            n={notes}
+            userRole={userRole}
+            setCheck={setCheck}
+            toShowAdmin={toShowAdmin}
+            userId={userId}
+            notesId={notesId}
+          />
+        )}
+        {userRole === "user" && notes && (
+          <SingleUsersCards
+            key={users?._id}
+            users={users}
+            token={token}
+            navigate={navigate}
+            notes={notes}
+            userRole={userRole}
+            check={check}
+            setCheck={setCheck}
+            toShowAdmin={toShowAdmin}
+            userId={userId}
+            notesId={notesId}
+          />
+        )}
+      </div>
     </div>
   );
 }

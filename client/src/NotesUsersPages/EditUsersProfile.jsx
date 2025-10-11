@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import api from "../init/api";
 import { useNavigate, useParams } from "react-router-dom";
+import UpdateButton from "../NotesComponents/Buttons/UpdateButton.jsx";
+import BackToProfileButton from "../NotesComponents/Buttons/BackToProfileButton.jsx"
 export default function EditUsersProfile() {
   // const [owner, setOwner] = useState({});
   const { usersId } = useParams(); // Get note ID from URL
@@ -48,7 +50,7 @@ export default function EditUsersProfile() {
   };
   return (
     <div className="container">
-      <h1>Edit Profile</h1>
+      <h1 className="text-center">Edit Profile</h1>
       <div className="row">
         {msg && (
           <div
@@ -59,15 +61,18 @@ export default function EditUsersProfile() {
           </div>
         )}
       </div>
-      <div className="row">
-        <form onSubmit={handleEditUser} className="col-12 col-lg-6 col-sm-8">
+      <div className="row mx-auto">
+        <form
+          onSubmit={handleEditUser}
+          className="col-12 col-lg-6 col-sm-8 mx-auto"
+        >
           <input
             type="text"
             name="username"
             placeholder="username of User"
             value={data.username}
             onChange={handleChange}
-            className="m-2 p-1 form-control"
+            className="my-2 p-1 form-control"
           />
           <input
             type="text"
@@ -75,20 +80,12 @@ export default function EditUsersProfile() {
             placeholder="password"
             value={data.password}
             onChange={handleChange}
-            className="m-2 p-1 form-control"
+            className="my-2 p-1 form-control"
           />
-          <button className="btn btn-outline-primary m-2">Edit</button>
+          <UpdateButton />
         </form>
       </div>
-
-      {/* <div className="row"> */}
-        <button
-          className="btn btn-outline-secondary m-2"
-          onClick={() => navigate(`/users/${usersId}`)}
-        >
-          Back to Profile
-        </button>
-      {/* </div> */}
+      <BackToProfileButton navigate={navigate} usersId={usersId} />
     </div>
   );
 }

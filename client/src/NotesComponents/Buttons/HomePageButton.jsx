@@ -1,12 +1,36 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-
-export default function HomePageButton() {
-  const navigate = useNavigate();
-  const userRole = localStorage.getItem("role");
+export default function HomePageButton({ navigate, userRole, toShowAdmin }) {
+  console.log("now amdin will see: ", userRole, toShowAdmin);
   return (
     <div>
-      <button
+      {userRole === "user" ? (
+        <button
+          className="btn btn-outline-primary"
+          onClick={() => {
+            navigate(`/notes`);
+          }}
+        >
+          Home Page
+        </button>
+      ) : toShowAdmin === "users" ? (
+        <button
+          className="btn btn-outline-primary"
+          onClick={() => {
+            navigate(`/admin/users`);
+          }}
+        >
+          Home Page
+        </button>
+      ) : (
+        <button
+          className="btn btn-outline-primary"
+          onClick={() => {
+            navigate(`/notes`);
+          }}
+        >
+          Home Page
+        </button>
+      )}
+      {/* <button
         className="btn btn-outline-primary"
         onClick={() => {
           if (userRole === "admin") navigate(`/admin/users`);
@@ -14,7 +38,7 @@ export default function HomePageButton() {
         }}
       >
         Home Page
-      </button>
+      </button> */}
     </div>
   );
 }

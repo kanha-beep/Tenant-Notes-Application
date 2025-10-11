@@ -21,6 +21,7 @@ const isNoteOwner = async (req, res, next) => {
         const tenant = req.user.tenant;
         const notes = await Notes.findOne({ _id: req.params.notesId, tenant: tenant._id }).populate("tenant").populate("user")
         if (!notes) return res.status(404).json({ message: "Not an owner" });
+        if (req.user.role === "admin") return next();
         if (tenant._id.toString() !== notes.tenant._id.toString()) return res.status(403).json({ message: "Unauthorized: different tenant" });
         if (req.user.userId.toString() !== notes.user._id.toString()) return res.status(403).json({ message: "Unauthorized: not the owner" });
         console.log("user isTenant: ", req.user.userId, req.user.tenant.name);

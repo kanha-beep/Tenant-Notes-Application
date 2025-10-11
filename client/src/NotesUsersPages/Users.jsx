@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../init/api";
+import GoHomeButton from "../NotesComponents/Buttons/GoHomeButton";
 
 export default function Users() {
-   const { usersId } = useParams();
+  const { usersId } = useParams();
   const [owner, setOwner] = useState({});
   // const { notesId } = useParams(); // Get note ID from URL
   const navigate = useNavigate();
@@ -31,44 +32,42 @@ export default function Users() {
     currentOwner();
   }, [token]);
   return (
-    <div className="container">
-      <h1>Profile</h1>
-      {/* {msg && (
+    <div className="container-fluid">
+      {/* <div className="row justify-content-center"> */}
+        <h1 className="text-center">Profile</h1>
+        {/* {msg && (
         <div className="alert alert-danger" role="alert">
           {msg}
         </div>
       )} */}
-      <div
-      className="row justify-content-center p-2"
-        style={{
-          backgroundColor: "aqua",
-          height: "100vh",
-          // display: "flex",
-          // justifyContent: "center",
-          // alignItems: "center",
-        }}
-      >
-        {owner && (
-          <div
-            key={owner._id}
-            style={{ backgroundColor: "yellow" }}
-            className="p-3 ms-1 me-1 rounded-5 col-12 col-lg-6 col-sm-8"
-          >
-            <p>
-              Current OwnerId: <b>{owner?._id}</b> <br />
-              Current Owner Name: <b>{owner?.username}</b> <br />
-              Current Tenant Name: <b>{owner?.tenant?.name}</b>
-            </p>
-            <button
-              className="p-2 rounded-4"
-              onClick={() => navigate(`/users/${owner?._id}/edit`)}
+        <div
+          className="row mx-auto justify-content-center align-items-center p-2 col-10 col-md-8 col-lg-6 bg-dark"
+          style={{
+            height: "100vh",
+          }}
+        >
+          {owner && (
+            <div
+              key={owner._id}
+              style={{ backgroundColor: "yellow" }}
+              className="p-3 ms-1 me-1 rounded-5 col-12 col-lg-6 col-sm-8"
             >
-              Edit Profile
-            </button>
-          </div>
-        )}
-      </div>
-      <button className="p-2 btn btn-outline-primary my-2" onClick={()=>navigate("/notes")}>Go Home</button>
+              <p>
+                Current OwnerId: <b>{owner?._id}</b> <br />
+                Current Owner Name: <b>{owner?.username}</b> <br />
+                Current Tenant Name: <b>{owner?.tenant?.name}</b>
+              </p>
+              <button
+                className="p-2 rounded-4"
+                onClick={() => navigate(`/users/${owner?._id}/edit`)}
+              >
+                Edit Profile
+              </button>
+            </div>
+          )}
+        </div>
+        <GoHomeButton navigate={navigate}/>
+      {/* </div> */}
     </div>
   );
 }
