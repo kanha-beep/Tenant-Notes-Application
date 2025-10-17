@@ -28,7 +28,7 @@ export default function AllNotesFinal() {
         mode ? "dark-mode" : ""
       }`}
     >
-      <div className="container mx-auto px-4 py-6">
+      <div className="container mx-auto px-4 py-6 mt-3">
         <div className="text-center mb-8">
           <h1
             className={`text-4xl font-bold mb-4 transition-colors duration-300 ${

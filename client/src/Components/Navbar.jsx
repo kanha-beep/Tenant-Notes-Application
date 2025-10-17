@@ -20,135 +20,145 @@ export default function MyNavbar({ isLoggedIn, setMsg , userRole}) {
     // console.log("isLoggedIn value navbar: ", isLoggedIn);
   }, [isLoggedIn]);
   return (
-    <nav className="modern-navbar sticky top-0 z-50 shadow-lg">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo/Brand */}
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">T</span>
-            </div>
-            <span className="gradient-text font-bold text-xl">TenantApp</span>
+    <nav className="navbar shadow-lg sticky-top" style={{background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(240,248,255,0.95) 100%)', backdropFilter: 'blur(10px)', zIndex: '1020'}}>
+      <div className="container-fluid px-4">
+        {/* Logo/Brand */}
+        <Link className="navbar-brand d-flex align-items-center gap-2" to="/" style={{textDecoration: 'none'}}>
+          <div className="d-flex align-items-center justify-content-center rounded-3" style={{width: '40px', height: '40px', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
+            <span className="text-white fw-bold">T</span>
           </div>
+          <span className="fw-bold fs-4" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>TenantApp</span>
+        </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
+        {/* Mobile Toggle Button */}
+        <button 
+          className="navbar-toggler border-0 p-2 d-lg-none" 
+          type="button" 
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          style={{boxShadow: 'none'}}
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+
+        {/* Navigation Menu */}
+        <div className={`navbar-collapse d-lg-flex ${isMobileMenuOpen ? 'd-flex' : 'd-none d-lg-flex'}`} id="navbarNav" style={{transition: 'all 0.3s ease'}}>
+          <ul className="navbar-nav me-auto align-items-lg-center gap-2 flex-lg-row">
             {isLoggedIn && (
               <>
                 {userRole === "admin" && (
-                  <Link 
-                    className="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium"
-                    to="/admin/dashboard"
-                  >
-                    📊 Dashboard
-                  </Link>
+                  <li className="nav-item">
+                    <Link 
+                      className="nav-link px-3 py-2 rounded-3 fw-medium d-flex align-items-center gap-2 text-dark"
+                      to="/admin/dashboard"
+                      style={{transition: 'all 0.3s ease', textDecoration: 'none'}}
+                      onMouseEnter={(e) => {
+                        e.target.style.backgroundColor = 'rgba(13, 110, 253, 0.1)';
+                        e.target.style.color = '#0d6efd';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.backgroundColor = 'transparent';
+                        e.target.style.color = '#212529';
+                      }}
+                    >
+                      <span>📊</span>
+                      <span>Dashboard</span>
+                    </Link>
+                  </li>
                 )}
                 {userRole === "user" && (
-                  <Link 
-                    className="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium"
-                    to="/notes"
-                  >
-                    📊 Dashboard
-                  </Link>
+                  <li className="nav-item">
+                    <Link 
+                      className="nav-link px-3 py-2 rounded-3 fw-medium d-flex align-items-center gap-2 text-dark"
+                      to="/notes"
+                      style={{transition: 'all 0.3s ease', textDecoration: 'none'}}
+                      onMouseEnter={(e) => {
+                        e.target.style.backgroundColor = 'rgba(13, 110, 253, 0.1)';
+                        e.target.style.color = '#0d6efd';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.backgroundColor = 'transparent';
+                        e.target.style.color = '#212529';
+                      }}
+                    >
+                      <span>📊</span>
+                      <span>Dashboard</span>
+                    </Link>
+                  </li>
                 )}
-                <Link 
-                  className="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium"
-                  to={`/users/${owner?._id}`}
-                >
-                  👤 Profile
-                </Link>
-                <Link 
-                  className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-all duration-200 font-medium shadow-md hover:shadow-lg"
-                  to="/logout"
-                >
-                  🚪 Logout
-                </Link>
+                <li className="nav-item">
+                  <Link 
+                    className="nav-link px-3 py-2 rounded-3 fw-medium d-flex align-items-center gap-2 text-dark"
+                    to={`/users/${owner?._id}`}
+                    style={{transition: 'all 0.3s ease', textDecoration: 'none'}}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor = 'rgba(13, 110, 253, 0.1)';
+                      e.target.style.color = '#0d6efd';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor = 'transparent';
+                      e.target.style.color = '#212529';
+                    }}
+                  >
+                    <span>👤</span>
+                    <span>Profile</span>
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link 
+                    className="btn btn-danger d-flex align-items-center gap-2 px-3 py-2 rounded-3 fw-medium text-white"
+                    to="/logout"
+                    style={{transition: 'all 0.3s ease', transform: 'scale(1)', textDecoration: 'none'}}
+                    onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
+                    onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+                  >
+                    <span>🚪</span>
+                    <span>Logout</span>
+                  </Link>
+                </li>
               </>
             )}
             {!isLoggedIn && (
               <>
-                <Link 
-                  className="px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium"
-                  to="/auth"
-                >
-                  📝 Sign Up
-                </Link>
-                <Link 
-                  className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-lg transition-all duration-200 font-medium shadow-md hover:shadow-lg"
-                  to="/auth"
-                >
-                  🔐 Login
-                </Link>
-              </>
-            )}
-          </div>
-
-          {/* Mobile menu button */}
-          <button
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Mobile Navigation */}
-        {isMobileMenuOpen && (
-        <div className="md:hidden border-t border-gray-200 bg-white">
-          <div className="py-4 space-y-2">
-            {isLoggedIn && (
-              <>
-                {userRole === "admin" && (
+                <li className="nav-item">
                   <Link 
-                    className="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-all duration-200"
-                    to="/admin/dashboard"
+                    className="nav-link px-3 py-2 rounded-3 fw-medium d-flex align-items-center gap-2 text-dark"
+                    to="/auth"
+                    style={{transition: 'all 0.3s ease', textDecoration: 'none'}}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor = 'rgba(13, 110, 253, 0.1)';
+                      e.target.style.color = '#0d6efd';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor = 'transparent';
+                      e.target.style.color = '#212529';
+                    }}
                   >
-                    📊 Dashboard
+                    <span>📝</span>
+                    <span>Sign Up</span>
                   </Link>
-                )}
-                {userRole === "user" && (
+                </li>
+                <li className="nav-item">
                   <Link 
-                    className="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-all duration-200"
-                    to="/notes"
+                    className="btn d-flex align-items-center gap-2 px-3 py-2 rounded-3 fw-medium text-white"
+                    to="/auth"
+                    style={{
+                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                      transition: 'all 0.3s ease',
+                      transform: 'scale(1)',
+                      border: 'none',
+                      textDecoration: 'none'
+                    }}
+                    onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
+                    onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
                   >
-                    📊 Dashboard
+                    <span>🔐</span>
+                    <span>Login</span>
                   </Link>
-                )}
-                <Link 
-                  className="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-all duration-200"
-                  to={`/users/${owner?._id}`}
-                >
-                  👤 Profile
-                </Link>
-                <Link 
-                  className="block px-4 py-2 bg-red-500 text-white rounded-lg transition-all duration-200 text-center"
-                  to="/logout"
-                >
-                  🚪 Logout
-                </Link>
+                </li>
               </>
             )}
-            {!isLoggedIn && (
-              <>
-                <Link 
-                  className="block px-4 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-all duration-200"
-                  to="/auth"
-                >
-                  📝 Sign Up
-                </Link>
-                <Link 
-                  className="block px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg transition-all duration-200 text-center"
-                  to="/auth"
-                >
-                  🔐 Login
-                </Link>
-              </>
-            )}
-          </div>
+          </ul>
         </div>
-        )}
       </div>
     </nav>
   );

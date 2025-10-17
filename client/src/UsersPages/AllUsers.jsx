@@ -38,7 +38,7 @@ export default function AllUsers({
     setFilterUsers(filtered);
   }, [filterTenant, token]);
   return (
-    <div className="row">
+    <div className="row mt-4">
       {/* admin + users */}
       {userRole === "admin" &&
       toShowAdmin === "users" &&

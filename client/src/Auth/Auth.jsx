@@ -57,113 +57,170 @@ export default function Auth({ setIsLoggedIn, setMsg, msg }) {
     }
   };
   console.log("error msg in Auth: ", msg);
+  
+  // Show error message if exists
+  if (msg) {
+    setTimeout(() => setMsg(""), 5000);
+  }
   return (
-    <div className="container vh-100 d-flex justify-content-center align-items-center">
-      <div className="card shadow p-4 w-100" style={{ maxWidth: "600px" }}>
-        {/* Toggle Buttons */}
-        <div className="d-flex mb-3">
-          <button
-            style={{ width: "2rem" }}
-            className={`btn ${
-              isPage ? "btn-outline-primary flex-fill" : "btn-primary flex-fill"
-            } me-2`}
-            onClick={() => setIsPage(false)}
-          >
-            Sign Up
-          </button>
-          <button
-            className={`btn ${
-              isPage ? "btn-primary flex-fill" : "btn-outline-primary flex-fill"
-            }`}
-            onClick={() => setIsPage(true)}
-            style={{ width: "2rem" }}
-          >
-            Login
-          </button>
+    <div className="min-vh-100 d-flex justify-content-center align-items-center" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
+      <div className="container">
+        <div className="row justify-content-center">
+          <div className="col-md-6 col-lg-5">
+            <div className="card shadow-lg border-0 rounded-4" style={{backdropFilter: 'blur(10px)', background: 'rgba(255,255,255,0.95)'}}>
+              <div className="card-body p-5">
+                {/* Logo/Brand */}
+                <div className="text-center mb-4">
+                  <div className="d-inline-flex align-items-center justify-content-center rounded-3 mb-3" style={{width: '60px', height: '60px', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
+                    <span className="text-white fw-bold fs-3">T</span>
+                  </div>
+                  <h2 className="fw-bold" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>TenantApp</h2>
+                  <p className="text-muted">Welcome back! Please sign in to your account</p>
+                </div>
+
+                {/* Toggle Buttons */}
+                <div className="d-flex mb-4 p-1 rounded-3" style={{background: '#f8f9fa'}}>
+                  <button
+                    className={`btn flex-fill rounded-3 fw-medium transition-all ${
+                      !isPage ? "text-white shadow-sm" : "text-dark bg-transparent"
+                    }`}
+                    style={{
+                      background: !isPage ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 'transparent',
+                      border: 'none',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onClick={() => setIsPage(false)}
+                  >
+                    Sign Up
+                  </button>
+                  <button
+                    className={`btn flex-fill rounded-3 fw-medium transition-all ${
+                      isPage ? "text-white shadow-sm" : "text-dark bg-transparent"
+                    }`}
+                    style={{
+                      background: isPage ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 'transparent',
+                      border: 'none',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onClick={() => setIsPage(true)}
+                  >
+                    Login
+                  </button>
+                </div>
+
+                {/* Error Message */}
+                {msg && (
+                  <div className="alert border-0 rounded-3 shadow-sm mb-4" style={{background: 'linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%)', color: 'white'}}>
+                    <div className="d-flex align-items-center">
+                      <span className="me-2">⚠️</span>
+                      <span>{msg}</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Form */}
+                <form onSubmit={handleSubmitAuth}>
+                  <div className="mb-3">
+                    <label className="form-label fw-medium text-dark">📧 Email</label>
+                    <input
+                      type="text"
+                      className="form-control form-control-lg rounded-3 border-0 shadow-sm"
+                      placeholder="Enter your email"
+                      name="email"
+                      value={userForm.email}
+                      onChange={handleChange}
+                      style={{background: '#f8f9fa', transition: 'all 0.3s ease'}}
+                      onFocus={(e) => e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'}
+                      onBlur={(e) => e.target.style.boxShadow = 'none'}
+                    />
+                  </div>
+                  
+                  <div className="mb-3">
+                    <label className="form-label fw-medium text-dark">🔒 Password</label>
+                    <input
+                      type="password"
+                      className="form-control form-control-lg rounded-3 border-0 shadow-sm"
+                      placeholder="Enter your password"
+                      name="password"
+                      value={userForm.password}
+                      onChange={handleChange}
+                      style={{background: '#f8f9fa', transition: 'all 0.3s ease'}}
+                      onFocus={(e) => e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'}
+                      onBlur={(e) => e.target.style.boxShadow = 'none'}
+                    />
+                  </div>
+                  
+                  <div className="mb-3">
+                    <label className="form-label fw-medium text-dark">🏢 Tenant</label>
+                    <select
+                      name="tenant"
+                      value={userForm.tenant}
+                      onChange={handleChange}
+                      className="form-select form-select-lg rounded-3 border-0 shadow-sm"
+                      style={{background: '#f8f9fa', transition: 'all 0.3s ease'}}
+                      onFocus={(e) => e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'}
+                      onBlur={(e) => e.target.style.boxShadow = 'none'}
+                    >
+                      <option value="" disabled>Select tenant</option>
+                      <option value="Acme">Acme</option>
+                      <option value="Globex">Globex</option>
+                    </select>
+                  </div>
+
+                  {!isPage && (
+                    <>
+                      <div className="mb-3">
+                        <label className="form-label fw-medium text-dark">👤 Username</label>
+                        <input
+                          type="text"
+                          className="form-control form-control-lg rounded-3 border-0 shadow-sm"
+                          placeholder="Enter your username"
+                          name="username"
+                          value={userForm.username}
+                          onChange={handleChange}
+                          style={{background: '#f8f9fa', transition: 'all 0.3s ease'}}
+                          onFocus={(e) => e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'}
+                          onBlur={(e) => e.target.style.boxShadow = 'none'}
+                        />
+                      </div>
+                      
+                      <div className="mb-3">
+                        <label className="form-label fw-medium text-dark">⚡ Role</label>
+                        <select
+                          name="role"
+                          value={userForm.role}
+                          onChange={handleChange}
+                          className="form-select form-select-lg rounded-3 border-0 shadow-sm"
+                          style={{background: '#f8f9fa', transition: 'all 0.3s ease'}}
+                          onFocus={(e) => e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'}
+                          onBlur={(e) => e.target.style.boxShadow = 'none'}
+                        >
+                          <option value="" disabled>Select Role</option>
+                          <option value="user">User</option>
+                          <option value="admin">Admin</option>
+                        </select>
+                      </div>
+                    </>
+                  )}
+
+                  <button
+                    type="submit"
+                    className="btn btn-lg w-100 rounded-3 fw-medium text-white border-0 shadow-sm"
+                    style={{
+                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                      transition: 'all 0.3s ease',
+                      transform: 'scale(1)'
+                    }}
+                    onMouseEnter={(e) => e.target.style.transform = 'scale(1.02)'}
+                    onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+                  >
+                    {isPage ? "🚀 Login" : "✨ Sign Up"}
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
-
-        {/* Form */}
-        <form
-          onSubmit={handleSubmitAuth}
-          className="p-3 row flex-column align-items-center"
-          style={{ height: "20rem" }}
-        >
-          {/* <div className="g-3 mb-3"> */}
-          <div className="col-12">
-            <input
-              type="text"
-              className="form-control mb-2"
-              placeholder="Email"
-              name="email"
-              value={userForm.email}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="col-12">
-            <input
-              type="password"
-              className="form-control mb-2"
-              placeholder="Password"
-              name="password"
-              value={userForm.password}
-              onChange={handleChange}
-            />
-          </div>
-          {/* </div> */}
-          {/* <div className="g-3 mb-3"> */}
-          <div className="col-12">
-            <select
-              name="tenant"
-              value={userForm.tenant}
-              onChange={handleChange}
-              className="form-select mb-2"
-            >
-              <option value="" disabled>
-                Select tenant
-              </option>
-              <option value="Acme">Acme</option>
-              <option value="Globex">Globex</option>
-            </select>
-          </div>
-
-          {!isPage && (
-            <>
-              <div className="col-12">
-                <input
-                  type="text"
-                  className="form-control mb-2"
-                  placeholder="Username"
-                  name="username"
-                  value={userForm.username}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="col-12">
-                <select
-                  name="role"
-                  value={userForm.role}
-                  onChange={handleChange}
-                  className="form-select mb-2"
-                >
-                  <option value="" disabled>
-                    Select Role
-                  </option>
-                  <option value="user">User</option>
-                  <option value="admin">Admin</option>
-                </select>
-              </div>
-            </>
-          )}
-          {/* </div> */}
-
-          <button
-            type="submit"
-            className="btn btn-primary"
-            style={{ width: "6rem" }}
-          >
-            {isPage ? "Login" : "Sign Up"}
-          </button>
-        </form>
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ export const getUser = async (req, res, next) => {
     const user = await User.findById(req.user._id).populate("tenant", "name plan noteLimit");
     if (!user) return next(new ExpressError(404, "User not found"));
     console.log("current user found: ", user)
-    res.json({ message: "success", user });
+    res.json({ message: "", user });
 }
 //view profile with id
 export const singleUser = async (req, res, next) => {
@@ -15,7 +15,7 @@ export const singleUser = async (req, res, next) => {
     // console.log("user found: ", user)
     if (!user) return next(new ExpressError(404, "User not found"))
     
-    res.json({ message: "success", user });
+    res.json({ message: "", user });
 
 }
 export const editUser = async (req, res, next) => {

@@ -6,14 +6,23 @@ export default function GoHomeButton({ navigate }) {
   console.log("details: ", userRole, toShowAdmin);
   return (
     <div>
-      {userRole === "users" ? (
+      {userRole === "users" && (
         <button
           className="p-2 btn btn-outline-primary my-2"
           onClick={() => navigate("/notes", { state: "notes" })}
         >
           User can go Home
         </button>
-      ) : (
+      )}
+      {userRole === "admin" && toShowAdmin === "users" && (
+        <button
+          className="p-2 btn btn-outline-primary my-2"
+          onClick={() => navigate("/admin/users", { state: "users" })}
+        >
+          Admin can go Home
+        </button>
+      )}
+      {userRole === "admin" && toShowAdmin === "notes" && (
         <button
           className="p-2 btn btn-outline-primary my-2"
           onClick={() => navigate("/admin/users", { state: "users" })}

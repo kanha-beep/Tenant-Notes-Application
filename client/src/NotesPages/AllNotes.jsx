@@ -6,7 +6,7 @@ export default function AllNotes({ toShowAdmin, filterNotes, setFilterNotes}) {
   const userRole = localStorage.getItem("role");
   // console.log("admin will see ", filterNotes);
   return (
-    <div className="row">
+    <div className="row mt-4">
       {filterNotes &&
         filterNotes.map((n) => (
           <AllNotesCards
