@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../init/instance.js";
+import HomePageButton from "../Components/Buttons/HomePageButton.jsx";
 
 export default function NewNotes() {
+  const userRole = localStorage.getItem("role");
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const token = localStorage.getItem("tokens");
@@ -28,57 +30,72 @@ export default function NewNotes() {
     }
   };
   return (
-    <div className="container">
-      <h1 className="text-center"> Add Note Here By User</h1>
+    <div className="container-fluid">
+      <div className="row justify-content-center">
+        <div className="col-12">
+          <h1 className="text-center py-4">Add Note Here By User</h1>
+        </div>
+      </div>
       {/* msg */}
-      <div className="row">
-        {msg !== "" && (
-          <div
-            className="alert alert-danger col-12 col-lg-6 col-sm-8"
-            role="alert"
-          >
-            {msg} &nbsp;&nbsp;&nbsp;
-            <button
-              className="rounded p-1 m-3"
-              onClick={() => navigate("/admin/plan")}
-            >
-              Plan Buy
-            </button>
-          </div>
-        )}
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-8 col-lg-6">
+          {msg !== "" && (
+            <div className="alert alert-danger" role="alert">
+              {msg}
+              <button
+                className="btn btn-sm btn-warning ms-3"
+                onClick={() => navigate("/admin/plan")}
+              >
+                Plan Buy
+              </button>
+            </div>
+          )}
+        </div>
       </div>
       {/* new note form */}
-      <div className="row">
-        <form onSubmit={handleCreateNote} className="col-12 col-lg-6 col-sm-8">
-          <input
-            type="text"
-            onChange={handleChange}
-            placeholder="Title of Note"
-            name="title"
-            value={data.title}
-            className="form-control my-3"
-          />
-          <input
-            type="text"
-            onChange={handleChange}
-            placeholder="Content of Note"
-            name="content"
-            value={data.content}
-            className="form-control my-3"
-          />
-
-          <button className="btn btn-outline-secondary mb-3">Create </button>
-        </form>
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-8 col-lg-6">
+          <form onSubmit={handleCreateNote} className="card p-4 shadow">
+            <div className="mb-3">
+              <input
+                type="text"
+                onChange={handleChange}
+                placeholder="Title of Note"
+                name="title"
+                value={data.title}
+                className="form-control"
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <textarea
+                onChange={handleChange}
+                placeholder="Content of Note"
+                name="content"
+                value={data.content}
+                className="form-control"
+                rows="4"
+                required
+              />
+            </div>
+            <button type="submit" className="btn btn-primary w-100 mb-3">
+              Create Note
+            </button>
+          </form>
+        </div>
       </div>
       {/* home page button */}
-      <button
-        onClick={() => {
-          navigate("/");
-        }}
-        className="btn btn-outline-primary mt-4"
-      >
-        HomePage
-      </button>
+      <div className="row justify-content-center mt-4">
+        <div className="col-12 text-center">
+          <HomePageButton userRole={userRole}/>
+          {/* <button
+            onClick={() => navigate("/notes")}
+            className="btn btn-outline-primary"
+          >
+            HomePage
+          </button> */}
+        </div>
+      </div>
     </div>
   );
 }

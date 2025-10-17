@@ -27,48 +27,19 @@ export default function Dashboard({ isLoggedIn }) {
   }, []);
 
   return (
-    <div
-      className="mt-4 main container-fluid mx-auto"
-      style={{ height: "100%", width: "95%", backgroundColor: "red" }}
-    >
-      {/* //need left and right to move */}
-      <div className="row">
-        {/* //left div starts - Profile */}
-        <Left className="me-5 col-12 col-md-2 col-lg-2" />
-        {/* ///left div ends */}
-        {/* //right div starts - dashboard */}
-        <Right className="dashboard col-12 col-md-9 col-lg-9" details={details} />
-        {/* right div ends */}
-      </div>
-      {/* //main row div of left and right ends */}
-      {/* </div> */}
-
-      {isLoggedIn && (
-        <>
-          <div className="container-fluid">
-            <div className="">
-              {/* first child */}
-              {/* <div className="col-md-6 mb-2 col-lg-5">
-                <div className="card text-center shadow">
-                  <div className="card-body">
-                    <h5 className="card-title shadow-lg">No of Notes</h5>
-                    <p className="card-text"></p>
-                  </div>
-                </div>
-              </div> */}
-              {/* second child */}
-              {/* <div className="col-md-6 mb-2 col-lg-5">
-                <div className="card text-center shadow">
-                  <div className="card-body">
-                    <h5 className="card-title shadow-lg">No of Users</h5>
-                    <p className="card-text">{details?.totalUsers ?? 0}</p>
-                  </div>
-                </div>
-              </div> */}
-            </div>
+    <div className="min-vh-100" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
+      <div className="container-fluid py-4">
+        <div className="row g-4">
+          {/* Left sidebar */}
+          <div className="col-12 col-lg-3">
+            <Left />
           </div>
-        </>
-      )}
+          {/* Main dashboard content */}
+          <div className="col-12 col-lg-9">
+            <Right details={details} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

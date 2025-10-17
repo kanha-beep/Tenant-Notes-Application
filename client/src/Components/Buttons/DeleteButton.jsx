@@ -38,13 +38,12 @@ export default function DeleteButton({
     }
   };
   return (
-    <div>
-      <button
-        className="p-2 rounded btn btn-outline-secondary"
-        onClick={() => handleDelete(n?._id)}
-      >
-        Delete
-      </button>
-    </div>
+    <button
+      className="btn btn-danger d-flex align-items-center gap-2 px-3 py-2 fw-medium rounded-2 shadow-sm"
+      onClick={() => handleDelete(n?._id)}
+    >
+      <span>🗑️</span>
+      <span>Delete</span>
+    </button>
   );
 }

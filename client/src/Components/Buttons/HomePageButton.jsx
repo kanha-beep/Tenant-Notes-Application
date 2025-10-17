@@ -18,7 +18,7 @@ export default function HomePageButton({ navigate, userRole, toShowAdmin }) {
             navigate(`/admin/users`, {state: "users"});
           }}
         >
-          Home Page for Admin
+          Home Page for Admin + users
         </button>
       ) : (
         <button

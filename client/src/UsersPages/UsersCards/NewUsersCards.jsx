@@ -1,17 +1,24 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import api from "../../init/instance.js";
-import PlanButton from "../../Components/Buttons/PlanButton.jsx"
+import PlanButton from "../../Components/Buttons/PlanButton.jsx";
 import CreateButton from "../../Components/Buttons/CreateButton.jsx";
 import HomePageButton from "../../Components/Buttons/HomePageButton.jsx";
 
 export default function NewUsersCards() {
   const userRole = localStorage.getItem("role");
+  const location = useLocation();
+  const toShowAdmin = location?.state || "users"
   console.log("role we got: 11 ", userRole);
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const token = localStorage.getItem("tokens");
-  const [data, setData] = useState({ title: "", content: "", email:"", username:"" });
+  const [data, setData] = useState({
+    title: "",
+    content: "",
+    email: "",
+    username: "",
+  });
   const handleChange = (e) => {
     setData((p) => ({ ...p, [e.target.name]: e.target.value }));
   };
@@ -79,11 +86,10 @@ export default function NewUsersCards() {
             value={data.content}
             className="form-control my-3"
           />
-          <button type="submit" className="btn btn-outline-secondary mb-3">Create User</button>
-          {/* <CreateButton /> */}
+          <CreateButton navigate={navigate}/>
         </form>
       </div>
-
+      <HomePageButton userRole={userRole} toShowAdmin={toShowAdmin} navigate={navigate}/>
     </div>
   );
 }

@@ -1,20 +1,31 @@
 import React from "react";
 
-export default function NewButton({ navigate, userRole }) {
-  // console.log("role:", userRole)
+export default function NewButton({ navigate, userRole, toShowAdmin }) {
+  const getButtonText = () => {
+    if (userRole === "admin" && toShowAdmin === "users") return "Add User";
+    if (userRole === "admin" && toShowAdmin === "notes") return "Add Note";
+    if (userRole === "user") return "Add New Note";
+    return "Add New Item";
+  };
+
+  const getIcon = () => {
+    if (userRole === "admin" && toShowAdmin === "users") return "👤";
+    if (userRole === "admin" && toShowAdmin === "notes") return "📝";
+    return "➕";
+  };
+
   return (
-    <div className="row">
-      <div className="col-12 col-md-3 col-lg-2">
-        <button
-          className="btn btn-primary rounded-5 mt-2 mb-2"
-          onClick={() => {
-            if (userRole === "admin") navigate(`/admin/users/new`);
-            else navigate("/notes/new");
-          }}
-        >
-          {userRole === "admin" ? "New User by admin" : "New Note"}
-        </button>
-      </div>
+    <div className="col-12 col-md-6 col-lg-4 order-lg-3 mb-3">
+      <button
+        className="btn btn-primary d-flex align-items-center gap-2 px-3 py-2 fw-semibold rounded-3 shadow w-100"
+        onClick={() => {
+          if (userRole === "admin") navigate(`/admin/users/new`);
+          else navigate("/notes/new");
+        }}
+      >
+        <span className="fs-5">{getIcon()}</span>
+        <span>{getButtonText()}</span>
+      </button>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-// import './App.css'
+import './App.css'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import { Navigate, Route, Routes } from "react-router-dom";
@@ -59,9 +59,10 @@ function App() {
     validateToken();
   }, [token]);
   return (
-    <>
+    <div className="min-h-screen">
       <MyNavbar isLoggedIn={isLoggedIn} msg={msg} setMsg={setMsg} userRole={userRole}/>
       <Msg msg={msg} setMsg={setMsg} />
+      <div className="container mx-auto px-4 py-6">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/health" element={<Health />} />
@@ -109,7 +110,8 @@ function App() {
           }
         />
       </Routes>
-    </>
+      </div>
+    </div>
   );
 }
 

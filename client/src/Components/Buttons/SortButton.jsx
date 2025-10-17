@@ -5,52 +5,41 @@ export default function SortButton({
   sortBy,
   setSortBy,
 }) {
-  // console.log("filtered in sort: ", userRole, toShowAdmin);
+  const getLabel = () => {
+    if (userRole === "admin" && toShowAdmin === "users") return "👥 Sort Users";
+    if (userRole === "admin" && toShowAdmin === "notes") return "📝 Sort Notes (Admin)";
+    return "📝 Sort Notes";
+  };
+
+  const getOptions = () => {
+    if (userRole === "admin" && toShowAdmin === "users") {
+      return [
+        { value: "", label: "📋 Select Sort" },
+        { value: "username", label: "👤 Username" },
+        { value: "email", label: "📧 Email" }
+      ];
+    }
+    return [
+      { value: "", label: "📋 Select Sort" },
+      { value: "content", label: "📄 Content" },
+      { value: "title", label: "📌 Title" }
+    ];
+  };
+
   return (
-    <div>
-      dc
-      {userRole === "admin" && toShowAdmin === "users" && (
-        <>
-          <label>Users By Admin</label>
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="p-2 m-1 rounded"
-          >
-            <option value="">Select</option>
-            <option value="username">Username</option>
-            <option value="email">Email</option>
-          </select>
-        </>
-      )}
-      {userRole === "admin" && toShowAdmin === "notes" && (
-        <>
-          <label>Notes by Admin</label>
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="p-2 m-1 rounded"
-          >
-            <option value="">Select</option>
-            <option value="content">Content</option>
-            <option value="title">Title</option>
-          </select>
-        </>
-      )}
-      {userRole === "user" && (
-        <>
-          <label>Notes by User</label>
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="p-2 m-1 rounded"
-          >
-            <option value="">Select</option>
-            <option value="content">Content</option>
-            <option value="title">Title</option>
-          </select>
-        </>
-      )}
+    <div className="col-12 col-md-6 col-lg-4 order-lg-1 mb-3">
+      <label className="form-label fw-semibold text-dark">{getLabel()}</label>
+      <select
+        value={sortBy}
+        onChange={(e) => setSortBy(e.target.value)}
+        className="form-select form-select-lg shadow-sm"
+      >
+        {getOptions().map(option => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }

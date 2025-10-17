@@ -42,46 +42,57 @@ export default function EditNotes() {
   };
 
   return (
-    <div className="container">
-      <h1 className="text-center">Edit Note</h1>
+    <div className="container-fluid">
+      <div className="row justify-content-center">
+        <div className="col-12">
+          <h1 className="text-center py-4">Edit Note</h1>
+        </div>
+      </div>
       {/* msg */}
-      <div className="row">
-        {msg && (
-          <div
-            className="alert alert-danger col-12 col-lg-6 col-md-8"
-            role="alert"
-          >
-            {msg}
-          </div>
-        )}
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-8 col-lg-6">
+          {msg && (
+            <div className="alert alert-danger" role="alert">
+              {msg}
+            </div>
+          )}
+        </div>
       </div>
       {/* edit form */}
-      <div className="row">
-        <form onSubmit={handleEditNote} className="col-12 col-lg-8 mx-auto">
-          <input
-            type="text"
-            name="title"
-            placeholder="Name of Note"
-            value={data.title}
-            onChange={handleChange}
-            className="form-control mb-2"
-          />
-          <input
-            type="text"
-            name="content"
-            placeholder="Content of Note"
-            value={data.content}
-            onChange={handleChange}
-            className="form-control my-2"
-          />
-          <UpdateButton/>
-        </form>
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-8 col-lg-6">
+          <form onSubmit={handleEditNote} className="card p-4 shadow">
+            <div className="mb-3">
+              <input
+                type="text"
+                name="title"
+                placeholder="Title of Note"
+                value={data.title}
+                onChange={handleChange}
+                className="form-control"
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <textarea
+                name="content"
+                placeholder="Content of Note"
+                value={data.content}
+                onChange={handleChange}
+                className="form-control"
+                rows="4"
+                required
+              />
+            </div>
+            <UpdateButton/>
+          </form>
+        </div>
       </div>
       {/* back to all notes */}
-      <div className="row">
-        <div className="col-12 col-lg-8 mx-auto">
+      <div className="row justify-content-center mt-4">
+        <div className="col-12 text-center">
           <button
-            className="btn btn-outline-secondary m-2 w-20"
+            className="btn btn-outline-secondary"
             onClick={() => navigate("/notes")}
           >
             Back to Notes

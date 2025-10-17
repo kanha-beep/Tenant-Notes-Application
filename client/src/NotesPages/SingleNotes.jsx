@@ -48,49 +48,53 @@ export default function Notes() {
   return (
     <div className="container-fluid">
       {/* msg */}
-      <div className="row">
-        {msg !== "" && (
-          <h4
-            className="alert alert-danger col-12 col-md-8 col-lg-6"
-            role="alert"
-          >
-            {msg}
-          </h4>
-        )}
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-10 col-lg-8">
+          {msg !== "" && (
+            <div className="alert alert-danger" role="alert">
+              {msg}
+            </div>
+          )}
+        </div>
       </div>
       {/* notes show details */}
-      {notes && (
-        <div
-          key={notes._id}
-          className="m-1 p-1 mx-auto col-7 col-lg-4 col-md-5"
-          style={{
-            backgroundColor: "aqua",
-            height: "20rem",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            boxShadow: "0px 0px 15px black",
-            borderRadius: "20px",
-          }}
-        >
-          <SingleNotesCards
-            n={notes}
-            token={token}
-            navigate={navigate}
-            noteId={noteId}
-            check={check}
-            setCheck={setCheck}
-          />
+      <div className="row justify-content-center">
+        <div className="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4">
+          {notes && (
+            <div
+              key={notes._id}
+              className="card shadow-lg mb-4"
+              style={{
+                backgroundColor: "aqua",
+                minHeight: "20rem",
+                borderRadius: "20px",
+              }}
+            >
+              <div className="card-body d-flex flex-column justify-content-center">
+                <SingleNotesCards
+                  n={notes}
+                  token={token}
+                  navigate={navigate}
+                  noteId={noteId}
+                  check={check}
+                  setCheck={setCheck}
+                />
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
       {/* home page */}
-      <button
-        onClick={() => navigate("/notes")}
-        style={{ width: "7rem" }}
-        className="p-2 rounded-5"
-      >
-        Home Page
-      </button>
+      <div className="row justify-content-center">
+        <div className="col-12 text-center">
+          <button
+            onClick={() => navigate("/notes")}
+            className="btn btn-primary btn-lg"
+          >
+            Home Page
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

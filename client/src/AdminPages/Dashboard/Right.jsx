@@ -5,42 +5,105 @@ import PlanButton from "../../Components/Buttons/PlanButton.jsx"
 import HealthButton from "../../Components/Buttons/HealthButton.jsx"
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-export default function Right({ className, details }) {
+
+export default function Right({ details }) {
   const [value, setValue] = useState(new Date());
+  
   return (
-    <div className={className} style={{ backgroundColor: "aqua" , minHeight:"35rem"}}>
-      {/* //1. header  */}
-      <h1 className="text-center">Dashboard</h1>
-      {/* //2. numbers */}
-      <div className="card shadow d-flex flex-row justify-content-center">
-        <div
-          className="card-body border border-darker"
-          style={{ backgroundColor: "aliceblue" }}
-        >
-          <h3 className="card-title">No of Notes</h3>
-          <h4 className="card-text">{details?.totalNotes ?? 0}</h4>
-          <AllNotesButton />
-        </div>
-        <div className="card-body order border-darker">
-          <h3 className="card-title">No of Users</h3>
-          <h4 className="card-text">{details?.totalUsers ?? 0}</h4>
-          <AllUsersButton />
-        </div>
+    <div className="h-100">
+      {/* Header */}
+      <div className="mb-4">
+        <h1 className="text-white fw-bold mb-2">📈 Admin Dashboard</h1>
+        <p className="text-white-50">Welcome back! Here's what's happening with your tenant management system.</p>
       </div>
-      <div className="d-flex mt-1">
-        {/* //left - targets */}
-        <div className="left col-6 col-md-6 col-lg-6">
-          {/* //left - calendar events */}
-          <Calendar onChange={setValue} value={value} />
-          <div className="d-flex mt-3 justify-content-evenly" style={{maxWidth:"22rem", backgroundColor:"pink"}}>
-            <PlanButton/>
-            <HealthButton/>
+
+      {/* Stats Cards */}
+      <div className="row g-4 mb-4">
+        <div className="col-md-6">
+          <div className="card shadow-lg border-0" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
+            <div className="card-body text-white p-4">
+              <div className="d-flex align-items-center justify-content-between">
+                <div>
+                  <h6 className="text-white-50 mb-2">Total Notes</h6>
+                  <h2 className="fw-bold mb-0">{details?.totalNotes ?? 0}</h2>
+                </div>
+                <div className="bg-white bg-opacity-20 rounded-circle p-3">
+                  <span style={{fontSize: '2rem'}}>📝</span>
+                </div>
+              </div>
+              <div className="mt-3">
+                <AllNotesButton />
+              </div>
+            </div>
           </div>
         </div>
-        {/* //right - Avg */}
-        <div className="right col-6 col-md-6 col-lg-6">
-          <div className="avg w-100 h-100" style={{backgroundColor:"yellow"}}>
-            <p className="text-center">Targets</p>
+        
+        <div className="col-md-6">
+          <div className="card shadow-lg border-0" style={{background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'}}>
+            <div className="card-body text-white p-4">
+              <div className="d-flex align-items-center justify-content-between">
+                <div>
+                  <h6 className="text-white-50 mb-2">Total Users</h6>
+                  <h2 className="fw-bold mb-0">{details?.totalUsers ?? 0}</h2>
+                </div>
+                <div className="bg-white bg-opacity-20 rounded-circle p-3">
+                  <span style={{fontSize: '2rem'}}>👥</span>
+                </div>
+              </div>
+              <div className="mt-3">
+                <AllUsersButton />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Section */}
+      <div className="row g-4">
+        {/* Calendar */}
+        <div className="col-lg-6">
+          <div className="card shadow-lg border-0" style={{background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(10px)'}}>
+            <div className="card-body p-4">
+              <h5 className="fw-bold mb-3 text-dark">📅 Calendar</h5>
+              <Calendar onChange={setValue} value={value} className="w-100" />
+              
+              <div className="d-flex gap-2 mt-4">
+                <PlanButton />
+                <HealthButton />
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Quick Actions */}
+        <div className="col-lg-6">
+          <div className="card shadow-lg border-0" style={{background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(10px)'}}>
+            <div className="card-body p-4">
+              <h5 className="fw-bold mb-4 text-dark">🎯 Quick Actions</h5>
+              <div className="d-grid gap-3">
+                <div className="p-3 bg-light rounded-3 d-flex align-items-center justify-content-between">
+                  <div>
+                    <h6 className="mb-1 fw-semibold">System Health</h6>
+                    <small className="text-muted">All systems operational</small>
+                  </div>
+                  <span className="badge bg-success">✓ Online</span>
+                </div>
+                <div className="p-3 bg-light rounded-3 d-flex align-items-center justify-content-between">
+                  <div>
+                    <h6 className="mb-1 fw-semibold">Active Sessions</h6>
+                    <small className="text-muted">Users currently online</small>
+                  </div>
+                  <span className="badge bg-primary">{details?.totalUsers ?? 0}</span>
+                </div>
+                <div className="p-3 bg-light rounded-3 d-flex align-items-center justify-content-between">
+                  <div>
+                    <h6 className="mb-1 fw-semibold">Recent Activity</h6>
+                    <small className="text-muted">Latest user actions</small>
+                  </div>
+                  <span className="badge bg-info">{details?.totalNotes ?? 0}</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

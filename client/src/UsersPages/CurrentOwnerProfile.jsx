@@ -34,42 +34,57 @@ export default function Users() {
     currentOwner();
   }, [token]);
   return (
-    <div className="container-fluid">
-        <h1 className="text-center">Profile</h1>
-        {/* msg */}
-        {msg && (
-        <div className="alert alert-danger" role="alert">
-          {msg}
+    <div className="container-fluid min-vh-100 bg-dark">
+      <div className="row justify-content-center">
+        <div className="col-12">
+          <h1 className="text-center text-white py-4">Profile</h1>
         </div>
-      )}
-        <div
-          className="row mx-auto justify-content-center align-items-center p-2 col-10 col-md-8 col-lg-6 bg-dark"
-          style={{
-            height: "100vh",
-          }}
-        >
-          {/* owners details */}
-          {owner && (
-            <div
-              key={owner._id}
-              style={{ backgroundColor: "yellow" }}
-              className="p-3 ms-1 me-1 rounded-5 col-12 col-lg-6 col-sm-8"
-            >
-              <p>
-                Current OwnerId: <b>{owner?._id}</b> <br />
-                Current Owner Name: <b>{owner?.username}</b> <br />
-                Current Tenant Name: <b>{owner?.tenant?.name}</b>
-              </p>
-              <button
-                className="p-2 rounded-4"
-                onClick={() => navigate(`/users/${owner?._id}/edit`)}
-              >
-                Edit Profile
-              </button>
+      </div>
+      {/* msg */}
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-8 col-lg-6">
+          {msg && (
+            <div className="alert alert-danger" role="alert">
+              {msg}
             </div>
           )}
         </div>
-        <GoHomeButton navigate={navigate}/>
+      </div>
+      {/* owners details */}
+      <div className="row justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
+        <div className="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4">
+          {owner && (
+            <div className="card shadow-lg" style={{ backgroundColor: "#ffeaa7" }}>
+              <div className="card-body text-center">
+                <h5 className="card-title mb-4">User Information</h5>
+                <div className="mb-3">
+                  <strong>User ID:</strong>
+                  <p className="text-muted">{owner?._id}</p>
+                </div>
+                <div className="mb-3">
+                  <strong>Username:</strong>
+                  <p className="text-primary">{owner?.username}</p>
+                </div>
+                <div className="mb-4">
+                  <strong>Tenant:</strong>
+                  <p className="text-success">{owner?.tenant?.name}</p>
+                </div>
+                <button
+                  className="btn btn-primary btn-lg w-100"
+                  onClick={() => navigate(`/users/${owner?._id}/edit`)}
+                >
+                  Edit Profile
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="row justify-content-center mt-4">
+        <div className="col-12 text-center">
+          <GoHomeButton navigate={navigate}/>
+        </div>
+      </div>
     </div>
   );
 }

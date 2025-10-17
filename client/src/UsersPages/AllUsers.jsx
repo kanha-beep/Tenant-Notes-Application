@@ -38,27 +38,24 @@ export default function AllUsers({
     setFilterUsers(filtered);
   }, [filterTenant, token]);
   return (
-    <div className="row" style={{ backgroundColor: "orange" }}>
+    <div className="row">
       {/* admin + users */}
       {userRole === "admin" &&
       toShowAdmin === "users" &&
       filterUsers?.length > 0 ? (
-        <>
-          <h3>All Users By Admin</h3>
-          <div className="d-flex flex-wrap">
-            {filterUsers?.map((u) => (
-              <AllUsersCards
-                key={u._id}
-                n={u}
-                navigate={navigate}
-                userRole={userRole}
-                filterUsers={filterUsers}
-              />
-            ))}
-          </div>
-        </>
+        filterUsers?.map((u) => (
+          <AllUsersCards
+            key={u._id}
+            n={u}
+            navigate={navigate}
+            userRole={userRole}
+            filterUsers={filterUsers}
+          />
+        ))
       ) : (
-        <p>Loading Users...</p>
+        <div className="col-12 text-center py-5">
+          <p className="text-muted">Loading Users...</p>
+        </div>
       )}
     </div>
   );

@@ -10,36 +10,47 @@ export default function SingleNotesCards({
   check,
   noteId,
 }) {
-  console.log("single id...: ", n);
   const userRole = localStorage.getItem("role");
   const toShowAdmin = localStorage.getItem("toShowAdmin");
-  console.log("got final notes: ", userRole, toShowAdmin);
+  
   return (
-    <div className="row justify-content-center">
-      <div
-        className="m-1 p-1 rounded"
-        style={{
-          backgroundColor: "aqua",
-          height: "20rem",
-        }}
-      >
-        {/* notes display for all users */}
-        <>
-          <p>
-            Title: <b>{n?.title} </b>
-          </p>
-          <p>
-            Content: <b> {n?.content}</b>{" "}
-          </p>
-          <p>
-            Owner: <b>{n?.user?.username} </b>
-          </p>
-          <p>
-            Tenant: <b> {n?.tenant?.name}</b>
-          </p>
-        </>
+    <div className="flex justify-center p-4">
+      <div className="modern-card p-8 max-w-2xl w-full">
+        {/* Header */}
+        <div className="border-l-4 border-purple-500 pl-6 mb-6">
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">📝 {n?.title}</h1>
+          <div className="flex items-center gap-4 text-sm text-gray-600">
+            <span>👤 {n?.user?.username}</span>
+            <span>🏢 {n?.tenant?.name}</span>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="bg-gray-50 rounded-xl p-6 mb-6">
+          <h3 className="text-lg font-semibold text-gray-700 mb-3">📄 Content</h3>
+          <p className="text-gray-800 leading-relaxed whitespace-pre-wrap">{n?.content}</p>
+        </div>
+
+        {/* Metadata */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div className="bg-blue-50 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-blue-600">👤</span>
+              <span className="font-semibold text-blue-800">Owner</span>
+            </div>
+            <p className="text-blue-700">{n?.user?.username}</p>
+          </div>
+          <div className="bg-purple-50 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-purple-600">🏢</span>
+              <span className="font-semibold text-purple-800">Tenant</span>
+            </div>
+            <p className="text-purple-700">{n?.tenant?.name}</p>
+          </div>
+        </div>
         
-        <div className="d-flex justify-content-between">
+        {/* Action Buttons */}
+        <div className="flex flex-wrap gap-3 pt-6 border-t border-gray-200">
           <DeleteButton
             token={token}
             n={n}
@@ -47,7 +58,6 @@ export default function SingleNotesCards({
             userRole={userRole}
             toShowAdmin={toShowAdmin}
           />
-          {/* edit button */}
           <EditButton
             navigate={navigate}
             userId={noteId}
