@@ -1,30 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import AllNotes from "./AllNotes.jsx";
+import AllUsers from "./AllUsers.jsx";
 import NewButton from "../Components/Buttons/NewButton.jsx";
 import PageButtons from "../Components/Buttons/PageButtons.jsx";
 import SwitchMode from "../Components/Buttons/SwitchMode.jsx";
 
-export default function AllNotesFinal() {
+export default function AllUsersFinal() {
   const [msg, setMsg] = useState("");
+  const location = useLocation()
   const navigate = useNavigate();
-  const location = useLocation();
   const [owner, setOwner] = useState([]);
   const token = localStorage.getItem("tokens");
   const userRole = localStorage.getItem("role");
   const [users, setUsers] = useState([]);
   const [notes, setNotes] = useState([]);
   const [filterNotes, setFilterNotes] = useState([]);
-  // const [filterUsers, setFilterUsers] = useState([]);
+  // const [toShowAdmin, setToShowAdmin] = useState(location.state);
+  // localStorage.setItem("toShowAdmin", toShowAdmin)
+  const [filterUsers, setFilterUsers] = useState([]);
   const [mode, setMode] = useState(false);
-  const [toShowAdmin, setToShowAdmin] = useState(location.state || "notes");
-console.log("toShowAdmin: ", toShowAdmin)
+  // console.log("admin will get", toShowAdmin);
+  const [toShowAdmin, setToShowAdmin] = useState(() => {
+    return localStorage.getItem("toShowAdmin") || "users";
+  });
+  console.log("what is got: ", toShowAdmin)
+  console.log(location.state, ": admin .....");
   useEffect(() => {
     if (toShowAdmin) localStorage.setItem("toShowAdmin", toShowAdmin);
   }, [toShowAdmin]);
+
   return (
     <div className={`${mode ? "bg-dark text-white" : "bg-light text-dark"}`}>
-      <h1 className="text-center">All Notes</h1>
+      <h1 className="text-center">All Users</h1>
       <NewButton navigate={navigate} userRole={userRole} />
       <PageButtons
         token={token}
@@ -35,10 +42,10 @@ console.log("toShowAdmin: ", toShowAdmin)
         filterNotes={filterNotes}
         toShowAdmin={toShowAdmin}
         setToShowAdmin={setToShowAdmin}
-        // setFilterUsers={setFilterUsers}
+        setFilterUsers={setFilterUsers}
       />
       <SwitchMode mode={mode} setMode={setMode} />
-      <AllNotes
+      <AllUsers
         navigate={navigate}
         owner={owner}
         setOwner={setOwner}
@@ -50,9 +57,8 @@ console.log("toShowAdmin: ", toShowAdmin)
         notes={notes}
         setNotes={setNotes}
         filterNotes={filterNotes}
-        setFilterNotes={setFilterNotes}
-        // filterUsers={filterUsers}
-        // setFilterUsers={setFilterUsers}
+        setFilterUsers={setFilterUsers}
+        filterUsers={filterUsers}
         setIsPage={() => {}}
         toShowAdmin={toShowAdmin}
         setToShowAdmin={setToShowAdmin}

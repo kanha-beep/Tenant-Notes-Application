@@ -1,50 +1,50 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import api from "../init/api";
-
+import api from "../init/instance.js";
+import UpdateButton from "../Components/Buttons/UpdateButton.jsx";
 export default function EditNotes() {
-  const { notesId } = useParams(); // Get note ID from URL
+  const { noteId } = useParams(); // Get note ID from URL
   const navigate = useNavigate();
   const token = localStorage.getItem("tokens");
+  const [msg, setMsg] = useState("");
+  const [data, setData] = useState({ title: "", content: "" });
 
-  const [msg, setMsg] = useState(""); // Error message
-  const [data, setData] = useState({ title: "", content: "" }); // Form data
-
-  // Fetch existing note data when component mounts
+  //get single note
   useEffect(() => {
     const fetchNote = async () => {
       try {
-        const res = await api.get(`/api/notes/${notesId}`, {
+        const res = await api.get(`/notes/${noteId}/edit`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setData({ title: res.data.title, content: res.data.content });
+        setData(res.data);
       } catch (e) {
-        setMsg(e.response?.data || "Error fetching note");
+        setMsg(e.response?.data?.message || "Error fetching note");
       }
     };
     fetchNote();
-  }, [notesId, token]);
+  }, [noteId, token]);
 
   const handleChange = (e) => {
     setData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-
+// edit note
   const handleEditNote = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.put(`/api/notes/${notesId}`, data, {
+      const res = await api.patch(`/notes/${noteId}/edit`, data, {
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log("Edited Note: ", res.data);
-      navigate("/notes"); // Redirect to notes page
+      navigate(`/notes/${noteId}`); // Redirect to notes page
     } catch (e) {
-      setMsg(e.response?.data || "Error updating note");
+      setMsg(e.response?.data?.message || "Error updating note");
     }
   };
 
   return (
     <div className="container">
       <h1 className="text-center">Edit Note</h1>
+      {/* msg */}
       <div className="row">
         {msg && (
           <div
@@ -55,6 +55,7 @@ export default function EditNotes() {
           </div>
         )}
       </div>
+      {/* edit form */}
       <div className="row">
         <form onSubmit={handleEditNote} className="col-12 col-lg-8 mx-auto">
           <input
@@ -71,11 +72,12 @@ export default function EditNotes() {
             placeholder="Content of Note"
             value={data.content}
             onChange={handleChange}
-            className="form-control"
+            className="form-control my-2"
           />
-          <button className="btn btn-outline-primary m-2">Update</button>
+          <UpdateButton/>
         </form>
       </div>
+      {/* back to all notes */}
       <div className="row">
         <div className="col-12 col-lg-8 mx-auto">
           <button

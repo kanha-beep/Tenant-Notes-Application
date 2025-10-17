@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../init/instance.js";
+import api from "../../init/instance.js";
+import PlanButton from "../../Components/Buttons/PlanButton.jsx";
+import CreateButton from "../../Components/Buttons/CreateButton.jsx";
+import HomePageButton from "../../Components/Buttons/HomePageButton.jsx";
 
-export default function NewNotes() {
+export default function NewNotesCards() {
+  const userRole = localStorage.getItem("role");
+  console.log("role we got: 11 ", userRole);
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const token = localStorage.getItem("tokens");
-  const [data, setData] = useState({ title: "", content: "" });
+  const [data, setData] = useState({ title: "", content: "", email:"", username:"" });
   const handleChange = (e) => {
     setData((p) => ({ ...p, [e.target.name]: e.target.value }));
   };
-  //new note
   const handleCreateNote = async (e) => {
     try {
       e.preventDefault();
@@ -20,17 +24,16 @@ export default function NewNotes() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("NewNotes: ........", res.data);
+      console.log("NewNotes: ", res.data);
       navigate("/notes");
     } catch (e) {
-      console.log("error NewNotes F:", e.response?.data);
-      setMsg(e.response?.data?.message || "Failed to create note");
+      console.log("error NewNotes F:", typeof e.response.data);
+      setMsg(e.response.data);
     }
   };
   return (
     <div className="container">
-      <h1 className="text-center"> Add Note Here By User</h1>
-      {/* msg */}
+      <h1 className="text-center"> Add Notes Here by Admin </h1>
       <div className="row">
         {msg !== "" && (
           <div
@@ -38,22 +41,16 @@ export default function NewNotes() {
             role="alert"
           >
             {msg} &nbsp;&nbsp;&nbsp;
-            <button
-              className="rounded p-1 m-3"
-              onClick={() => navigate("/admin/plan")}
-            >
-              Plan Buy
-            </button>
+            <PlanButton />
           </div>
         )}
       </div>
-      {/* new note form */}
-      <div className="row">
-        <form onSubmit={handleCreateNote} className="col-12 col-lg-6 col-sm-8">
+      <div className="row justify-content-center">
+        <form onSubmit={handleCreateNote} className="col-12 col-lg-6 col-md-8">
           <input
             type="text"
             onChange={handleChange}
-            placeholder="Title of Note"
+            placeholder="Title of User"
             name="title"
             value={data.title}
             className="form-control my-3"
@@ -61,24 +58,15 @@ export default function NewNotes() {
           <input
             type="text"
             onChange={handleChange}
-            placeholder="Content of Note"
+            placeholder="Content of User"
             name="content"
             value={data.content}
             className="form-control my-3"
           />
-
-          <button className="btn btn-outline-secondary mb-3">Create </button>
+          <CreateButton />
         </form>
       </div>
-      {/* home page button */}
-      <button
-        onClick={() => {
-          navigate("/");
-        }}
-        className="btn btn-outline-primary mt-4"
-      >
-        HomePage
-      </button>
+      <HomePageButton />
     </div>
   );
 }
