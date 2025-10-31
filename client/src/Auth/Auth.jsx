@@ -28,10 +28,12 @@ export default function Auth({ setIsLoggedIn, setMsg, msg }) {
         console.log("url signup: ", url);
         const res = await api.post(`/auth/${url}`, userForm);
         console.log("Sign up done: ", res.data.data);
+        navigate("/auth")
       } catch (e) {
         if ([401, 402, 403].includes(e.response.status))
           setMsg(e.response.data);
         console.log(e.response.data);
+        alert(e?.response?.data?.message)
       }
     } else {
       try {
@@ -40,12 +42,11 @@ export default function Auth({ setIsLoggedIn, setMsg, msg }) {
         const res = await api.post(`/auth/${url}`, userForm);
         const token = res.data.token;
         console.log("token", token)
-        // const decoded = jwt.decode(token);
-        // console.loh("decoded: ", decoded)
         const role = res.data.role;
         localStorage.setItem("tokens", token);
         localStorage.setItem("tenant", userForm.tenant);
         localStorage.setItem("role", role);
+        localStorage.setItem("userId: ", res?.data?._id)
         console.log("login done")
         setIsLoggedIn(true);
         console.log("role got", role);
@@ -64,44 +65,36 @@ export default function Auth({ setIsLoggedIn, setMsg, msg }) {
   }
   return (
     <div className="min-vh-100 d-flex justify-content-center align-items-center" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-md-6 col-lg-5">
-            <div className="card shadow-lg border-0 rounded-4" style={{backdropFilter: 'blur(10px)', background: 'rgba(255,255,255,0.95)'}}>
-              <div className="card-body p-5">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-center">
+          <div className="w-full md:w-2/3 lg:w-2/5">
+            <div className="bg-white/95 backdrop-blur-lg shadow-lg border-0 rounded-2xl" style={{backdropFilter: 'blur(10px)'}}>
+              <div className="p-8">
                 {/* Logo/Brand */}
-                <div className="text-center mb-4">
-                  <div className="d-inline-flex align-items-center justify-content-center rounded-3 mb-3" style={{width: '60px', height: '60px', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
-                    <span className="text-white fw-bold fs-3">T</span>
+                <div className="text-center mb-6">
+                  <div className="inline-flex items-center justify-center rounded-lg mb-3 w-15 h-15" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
+                    <span className="text-white font-bold text-3xl">T</span>
                   </div>
-                  <h2 className="fw-bold" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>TenantApp</h2>
-                  <p className="text-muted">Welcome back! Please sign in to your account</p>
+                  <h2 className="font-bold text-2xl bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">TenantApp</h2>
+                  <p className="text-gray-500">Welcome back! Please sign in to your account</p>
                 </div>
 
                 {/* Toggle Buttons */}
-                <div className="d-flex mb-4 p-1 rounded-3" style={{background: '#f8f9fa'}}>
+                <div className="flex mb-6 p-1 rounded-lg bg-gray-100">
                   <button
-                    className={`btn flex-fill rounded-3 fw-medium transition-all ${
-                      !isPage ? "text-white shadow-sm" : "text-dark bg-transparent"
+                    className={`flex-1 rounded-lg font-medium transition-all duration-300 py-2 ${
+                      !isPage ? "text-white shadow-sm bg-gradient-to-r from-indigo-500 to-purple-600" : "text-gray-800 bg-transparent"
                     }`}
-                    style={{
-                      background: !isPage ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 'transparent',
-                      border: 'none',
-                      transition: 'all 0.3s ease'
-                    }}
+                    style={{border: 'none'}}
                     onClick={() => setIsPage(false)}
                   >
                     Sign Up
                   </button>
                   <button
-                    className={`btn flex-fill rounded-3 fw-medium transition-all ${
-                      isPage ? "text-white shadow-sm" : "text-dark bg-transparent"
+                    className={`flex-1 rounded-lg font-medium transition-all duration-300 py-2 ${
+                      isPage ? "text-white shadow-sm bg-gradient-to-r from-indigo-500 to-purple-600" : "text-gray-800 bg-transparent"
                     }`}
-                    style={{
-                      background: isPage ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : 'transparent',
-                      border: 'none',
-                      transition: 'all 0.3s ease'
-                    }}
+                    style={{border: 'none'}}
                     onClick={() => setIsPage(true)}
                   >
                     Login

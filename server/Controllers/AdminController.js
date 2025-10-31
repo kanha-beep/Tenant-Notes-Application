@@ -100,8 +100,8 @@ export const updateUser = async (req, res, next) => {
     // console.log("req.params user Change AdminRoutes: ", req.params)
     const { userId } = req.params;
     console.log("req.body user change AdminRoutes: ", req.body);
-    const { username, email, password} = req.body;
-    const users = await User.findByIdAndUpdate(userId, { username, email, password}, { new: true });
+    const { username, email, password } = req.body;
+    const users = await User.findByIdAndUpdate(userId, { username, email, password }, { new: true });
     if (!users) return next(new ExpressError(401, "No user AdminRoute"))
     console.log("user changed AdminRoute: ", users)
     res.json(users);
@@ -127,3 +127,24 @@ export const dashboard = async (req, res, next) => {
     if (!totalUsers) return next(new ExpressError(401, "No total users coming"))
     res.json({ totalUsers, totalNotes })
 }
+export const generateUserReport = async (req, res) => {
+
+    const users = await User.find({ tenant: req.user.tenant._id });
+    // Map only required fields
+    const reportData = users.map(u => ({
+        Username: u.username,
+        Email: u.email,
+        Password: u.password,
+        CreatedAt: u.createdAt ? new Date(u.createdAt).toLocaleDateString() : "N/A",
+    }));
+    function convertToCSV(data) {
+        const headers = Object.keys(data[0]).join(",");
+        const rows = data.map(obj => Object.values(obj).join(","));
+        return [headers, ...rows].join("\n");
+    }
+    // Convert to CSV or Excel same as monthly report
+    const csv = convertToCSV(reportData);
+    res.header("Content-Type", "text/csv");
+    res.attachment("User_Report.csv");
+    res.send(csv);
+};

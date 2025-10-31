@@ -8,7 +8,7 @@ export default function NewNotes() {
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const token = localStorage.getItem("tokens");
-  const [data, setData] = useState({ title: "", content: "" });
+  const [data, setData] = useState({ title: "", content: "", user: "" });
   const handleChange = (e) => {
     setData((p) => ({ ...p, [e.target.name]: e.target.value }));
   };
@@ -78,6 +78,17 @@ export default function NewNotes() {
                 required
               />
             </div>
+            <div className="mb-3">
+              <input
+                onChange={handleChange}
+                placeholder="User of Note"
+                name="user"
+                value={data.user}
+                className="form-control"
+                rows="4"
+                required
+              />
+            </div>
             <button type="submit" className="btn btn-primary w-100 mb-3">
               Create Note
             </button>
@@ -87,13 +98,7 @@ export default function NewNotes() {
       {/* home page button */}
       <div className="row justify-content-center mt-4">
         <div className="col-12 text-center">
-          <HomePageButton userRole={userRole}/>
-          {/* <button
-            onClick={() => navigate("/notes")}
-            className="btn btn-outline-primary"
-          >
-            HomePage
-          </button> */}
+          <HomePageButton userRole={userRole} />
         </div>
       </div>
     </div>

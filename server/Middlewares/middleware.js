@@ -18,7 +18,7 @@ const isNoteOwner = async (req, res, next) => {
     try {
         const notes = await Notes.findById(req.params.noteId).populate("tenant").populate("user")
         // console.log("Raw note from DB:", JSON.stringify(notes, null, 2));
-        console.log("User field:", notes?.user);
+        // console.log("User field:", notes?.user);
         if (!notes) return res.status(404).json({ message: "Note not found" });
         if (notes.tenant._id.toString() !== req.user.tenant._id.toString()) return res.status(403).json({ message: "Note belongs to different tenant" });
         if (req.user.role === "admin") return next();
@@ -26,7 +26,7 @@ const isNoteOwner = async (req, res, next) => {
             console.log("User field is null/undefined:", notes.user);
             return res.status(500).json({ message: "Note user not populated" });
         }
-        console.log("Checking ownership: ", req.user._id, notes.user._id);
+        // console.log("Checking ownership: ", req.user._id, notes.user._id);
         if (req.user._id.toString() !== notes.user._id.toString()) return res.status(403).json({ message: "Unauthorized: not the owner" });
         next();
     } catch (e) {

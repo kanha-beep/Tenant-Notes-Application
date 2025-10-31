@@ -20,7 +20,7 @@ export default function MyNavbar({ isLoggedIn, setMsg , userRole}) {
     // console.log("isLoggedIn value navbar: ", isLoggedIn);
   }, [isLoggedIn]);
   return (
-    <nav className="navbar shadow-lg sticky-top" style={{background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(240,248,255,0.95) 100%)', backdropFilter: 'blur(10px)', zIndex: '1020'}}>
+    <nav className="navbar navbar-expand-lg shadow-lg sticky-top" style={{background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(240,248,255,0.95) 100%)', backdropFilter: 'blur(10px)', zIndex: '1020'}}>
       <div className="container-fluid px-4">
         {/* Logo/Brand */}
         <Link className="navbar-brand d-flex align-items-center gap-2" to="/" style={{textDecoration: 'none'}}>
@@ -41,7 +41,7 @@ export default function MyNavbar({ isLoggedIn, setMsg , userRole}) {
         </button>
 
         {/* Navigation Menu */}
-        <div className={`navbar-collapse d-lg-flex ${isMobileMenuOpen ? 'd-flex' : 'd-none d-lg-flex'}`} id="navbarNav" style={{transition: 'all 0.3s ease'}}>
+        <div className={`navbar-collapse ${isMobileMenuOpen ? 'd-block' : 'd-none'} d-lg-block`} id="navbarNav" style={{transition: 'all 0.3s ease'}}>
           <ul className="navbar-nav me-auto align-items-lg-center gap-2 flex-lg-row">
             {isLoggedIn && (
               <>

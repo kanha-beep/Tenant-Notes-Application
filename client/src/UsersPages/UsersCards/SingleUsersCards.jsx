@@ -25,7 +25,6 @@ export default function SingleUsersCards({
               <h1 className="text-2xl font-bold text-gray-800 mb-2">👤 {n?.username}</h1>
               <p className="text-gray-600">📧 {n?.email}</p>
             </div>
-
             {/* User Details */}
             <div className="grid grid-cols-1 gap-4 mb-6">
               <div className="bg-blue-50 rounded-lg p-4">
